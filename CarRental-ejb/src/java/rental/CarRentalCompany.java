@@ -8,20 +8,40 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.CascadeType;
+import static javax.persistence.CascadeType.REMOVE;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
+@Entity
 public class CarRentalCompany {
 
     private static Logger logger = Logger.getLogger(CarRentalCompany.class.getName());
+    
+    @Id
     private String name;
+    
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Car> cars;
+    
+    @ManyToMany
     private Set<CarType> carTypes = new HashSet<CarType>();
-	private List<String> regions;
+    
+
+    private List<String> regions;
 
 	
     /***************
-     * CONSTRUCTOR *
+     * CONSTRUCTORS*
      ***************/
-
+    
+    public CarRentalCompany(){
+        //no argument constructor used for enty class creation
+    }
+    
+    
     public CarRentalCompany(String name, List<String> regions, List<Car> cars) {
         logger.log(Level.INFO, "<{0}> Starting up CRC {0} ...", name);
         setName(name);
@@ -40,14 +60,14 @@ public class CarRentalCompany {
         return name;
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
     /***********
      * Regions *
      **********/
-    private void setRegions(List<String> regions) {
+    public void setRegions(List<String> regions) {
         this.regions = regions;
     }
     
@@ -59,6 +79,7 @@ public class CarRentalCompany {
      * CAR TYPES *
      *************/
     
+
     public Collection<CarType> getAllTypes() {
         return carTypes;
     }
@@ -108,6 +129,7 @@ public class CarRentalCompany {
         }
         return out;
     }
+    
     
      public Set<Car> getCars(String type) {
         Set<Car> out = new HashSet<Car>();

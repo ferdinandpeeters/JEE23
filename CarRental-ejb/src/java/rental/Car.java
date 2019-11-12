@@ -3,19 +3,36 @@ package rental;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+@Entity
 public class Car {
 
+    @Id
     private int id;
+    
+    @ManyToOne
     private CarType type;
+    
+    @OneToMany(mappedBy="carId")
     private Set<Reservation> reservations;
 
     /***************
      * CONSTRUCTOR *
      ***************/
     
+    
+    
+    
+    public Car() {
+        //no arguments for the bean
+    }
+
     public Car(int uid, CarType type) {
-    	this.id = uid;
+        this.id = uid;
         this.type = type;
         this.reservations = new HashSet<Reservation>();
     }
