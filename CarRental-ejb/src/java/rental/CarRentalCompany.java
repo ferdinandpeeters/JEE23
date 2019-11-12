@@ -20,29 +20,30 @@ import javax.persistence.OneToMany;
 public class CarRentalCompany {
 
     private static Logger logger = Logger.getLogger(CarRentalCompany.class.getName());
-    
+
     @Id
     private String name;
-    
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Car> cars;
-    
-    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH},fetch=FetchType.LAZY)
+
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Set<CarType> carTypes = new HashSet<CarType>();
-    
 
     private List<String> regions;
 
-	
-    /***************
-     * CONSTRUCTORS*
-     ***************/
-    
-    public CarRentalCompany(){
+    /**
+     * *************
+     * CONSTRUCTORS* *************
+     */
+    public CarRentalCompany() {
         //no argument constructor used for enty class creation
     }
-    
-    
+
+    public CarRentalCompany(String companyName) {
+        this(companyName, null, null);
+    }
+
     public CarRentalCompany(String name, List<String> regions, List<Car> cars) {
         logger.log(Level.INFO, "<{0}> Starting up CRC {0} ...", name);
         setName(name);
@@ -53,10 +54,10 @@ public class CarRentalCompany {
         }
     }
 
-    /********
-     * NAME *
-     ********/
-    
+    /**
+     * ******
+     * NAME * ******
+     */
     public String getName() {
         return name;
     }
@@ -65,30 +66,31 @@ public class CarRentalCompany {
         this.name = name;
     }
 
-    /***********
-     * Regions *
-     **********/
+    /**
+     * *********
+     * Regions * ********
+     */
     public void setRegions(List<String> regions) {
         this.regions = regions;
     }
-    
+
     public List<String> getRegions() {
         return this.regions;
     }
 
-    /*************
-     * CAR TYPES *
-     *************/
-    
-
+    /**
+     * ***********
+     * CAR TYPES * ***********
+     */
     public Collection<CarType> getAllTypes() {
         return carTypes;
     }
 
     public CarType getType(String carTypeName) {
-        for(CarType type:carTypes){
-            if(type.getName().equals(carTypeName))
+        for (CarType type : carTypes) {
+            if (type.getName().equals(carTypeName)) {
                 return type;
+            }
         }
         throw new IllegalArgumentException("<" + carTypeName + "> No cartype of name " + carTypeName);
     }
@@ -108,10 +110,15 @@ public class CarRentalCompany {
         return availableCarTypes;
     }
 
-    /*********
-     * CARS *
-     *********/
-    
+    /**
+     *********
+     * CARS * 
+     ********
+     */
+    public void addCar(CarType type) {
+        cars.add(new Car(type));
+    }
+
     public Car getCar(int uid) {
         for (Car car : cars) {
             if (car.getId() == uid) {
@@ -130,9 +137,8 @@ public class CarRentalCompany {
         }
         return out;
     }
-    
-    
-     public Set<Car> getCars(String type) {
+
+    public Set<Car> getCars(String type) {
         Set<Car> out = new HashSet<Car>();
         for (Car car : cars) {
             if (type.equals(car.getType().getName())) {
@@ -152,21 +158,20 @@ public class CarRentalCompany {
         return availableCars;
     }
 
-    /****************
-     * RESERVATIONS *
-     ****************/
-    
+    /**
+     * **************
+     * RESERVATIONS * **************
+     */
     public Quote createQuote(ReservationConstraints constraints, String guest)
             throws ReservationException {
         logger.log(Level.INFO, "<{0}> Creating tentative reservation for {1} with constraints {2}",
                 new Object[]{name, guest, constraints.toString()});
 
-
         if (!this.regions.contains(constraints.getRegion()) || !isAvailable(constraints.getCarType(), constraints.getStartDate(), constraints.getEndDate())) {
             throw new ReservationException("<" + name
                     + "> No cars available to satisfy the given constraints.");
         }
-		
+
         CarType type = getType(constraints.getCarType());
 
         double price = calculateRentalPrice(type.getRentalPricePerDay(), constraints.getStartDate(), constraints.getEndDate());
@@ -198,16 +203,18 @@ public class CarRentalCompany {
         logger.log(Level.INFO, "<{0}> Cancelling reservation {1}", new Object[]{name, res.toString()});
         getCar(res.getCarId()).removeReservation(res);
     }
-    
+
     public Set<Reservation> getReservationsBy(String renter) {
         logger.log(Level.INFO, "<{0}> Retrieving reservations by {1}", new Object[]{name, renter});
         Set<Reservation> out = new HashSet<Reservation>();
-        for(Car c : cars) {
-            for(Reservation r : c.getReservations()) {
-                if(r.getCarRenter().equals(renter))
+        for (Car c : cars) {
+            for (Reservation r : c.getReservations()) {
+                if (r.getCarRenter().equals(renter)) {
                     out.add(r);
+                }
             }
         }
         return out;
     }
+
 }
