@@ -3,7 +3,9 @@ package rental;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -14,10 +16,10 @@ public class Car {
     @Id
     private int id;
     
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH},fetch = FetchType.EAGER)
     private CarType type;
     
-    @OneToMany(mappedBy="carId")
+    @OneToMany(mappedBy="carId", fetch=FetchType.LAZY)
     private Set<Reservation> reservations;
 
     /***************

@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import static javax.persistence.CascadeType.REMOVE;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -23,10 +24,10 @@ public class CarRentalCompany {
     @Id
     private String name;
     
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
     private List<Car> cars;
     
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH},fetch=FetchType.LAZY)
     private Set<CarType> carTypes = new HashSet<CarType>();
     
 
