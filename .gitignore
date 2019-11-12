@@ -27,3 +27,11 @@ CarRental-ejb/nbproject/build-impl.xml
 CarRental-ejb/nbproject/ant-deploy.xml
 
 CarRental-lib/build.xml
+CarRental-ejb/build/classes/CarRental-lib.jar
+CarRental-ejb/build/classes/rental/Car.rapt
+CarRental-ejb/build/classes/rental/Car_.class
+CarRental-ejb/build/classes/rental/CarRentalCompany.rapt
+CarRental-ejb/build/classes/rental/CarRentalCompany_.class
+CarRental-ejb/build/classes/resouces.res
+CarRental-ejb/build/generated-sources/ap-source-output/rental/Car_.java
+CarRental-ejb/build/generated-sources/ap-source-output/rental/CarRentalCompany_.java
