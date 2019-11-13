@@ -31,7 +31,6 @@ public class Car {
      **************
      */
     public Car() {
-        this(null);
     }
 
     public Car(CarType type) {

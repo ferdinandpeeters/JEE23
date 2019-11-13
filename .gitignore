@@ -52,3 +52,4 @@ CarRental-ejb/build/classes/session/ManagerSession.class
 CarRental-ejb/build/generated-sources/ap-source-output/rental/Car_.java
 CarRental-ejb/build/generated-sources/ap-source-output/rental/CarRentalCompany_.java
 CarRental/nbproject/project.properties
+CarRental-ejb/build/classes/session/CarRentalSession.class

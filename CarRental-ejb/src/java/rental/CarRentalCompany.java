@@ -10,12 +10,34 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.CascadeType;
-import static javax.persistence.CascadeType.REMOVE;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+
+@NamedQueries({
+    //CarRentalSession Queries
+    @NamedQuery(name = "getAllCompanies", query
+            = "SELECT crc FROM CarRentalCompany crc")
+    ,
+
+    @NamedQuery(name = "getAvailableCarTypes", query
+            = "")
+    ,
+    
+    @NamedQuery(name = "getAvailableCarTypes", query
+            = "SELECT DISTINCT car.type FROM Car car"
+            + "WHERE car.id NOT IN "
+            + "("
+            + "SELECT res.carId FROM Reservations res"
+            + "WHERE res.startDate <= :endDate AND res.endDate <= :startDate"
+            + ")"),
+
+    //ManagerSession Queries
+})
 
 @Entity
 public class CarRentalCompany {
@@ -35,7 +57,7 @@ public class CarRentalCompany {
 
     /**
      * *************
-     * CONSTRUCTORS* *************
+     * CONSTRUCTORS* ************
      */
     public CarRentalCompany() {
         //no argument constructor used for enty class creation
@@ -57,7 +79,7 @@ public class CarRentalCompany {
 
     /**
      * ******
-     * NAME * ******
+     * NAME * *****
      */
     public String getName() {
         return name;
@@ -69,7 +91,7 @@ public class CarRentalCompany {
 
     /**
      * *********
-     * Regions * ********
+     * Regions * *******
      */
     public void setRegions(List<String> regions) {
         this.regions = regions;
@@ -81,7 +103,7 @@ public class CarRentalCompany {
 
     /**
      * ***********
-     * CAR TYPES * ***********
+     * CAR TYPES * **********
      */
     public Collection<CarType> getAllTypes() {
         return carTypes;
@@ -113,8 +135,7 @@ public class CarRentalCompany {
 
     /**
      *********
-     * CARS * 
-     ********
+     * CARS * *******
      */
     public void addCar(CarType type) {
         cars.add(new Car(type));
@@ -161,7 +182,7 @@ public class CarRentalCompany {
 
     /**
      * **************
-     * RESERVATIONS * **************
+     * RESERVATIONS * *************
      */
     public Quote createQuote(ReservationConstraints constraints, String guest)
             throws ReservationException {

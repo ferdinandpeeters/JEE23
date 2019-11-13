@@ -6,9 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import rental.CarRentalCompany;
 import rental.CarType;
 import rental.Quote;
-import rental.RentalStore;
 import rental.Reservation;
 import rental.ReservationConstraints;
 import rental.ReservationException;
@@ -16,33 +18,37 @@ import rental.ReservationException;
 @Stateful
 public class CarRentalSession implements CarRentalSessionRemote {
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private String renter;
     private List<Quote> quotes = new LinkedList<Quote>();
 
     @Override
     public Set<String> getAllRentalCompanies() {
-        return new HashSet<String>(RentalStore.getRentals().keySet());
+        return new HashSet<String>(
+                entityManager.createNamedQuery("getAllCompanies").
+                        getResultList());
     }
-    
+
     @Override
     public List<CarType> getAvailableCarTypes(Date start, Date end) {
-        List<CarType> availableCarTypes = new LinkedList<CarType>();
-        for(String crc : getAllRentalCompanies()) {
-            for(CarType ct : RentalStore.getRentals().get(crc).getAvailableCarTypes(start, end)) {
-                if(!availableCarTypes.contains(ct))
-                    availableCarTypes.add(ct);
-            }
-        }
-        return availableCarTypes;
+        return entityManager.
+                createNamedQuery("getAvailableCarTypes", CarType.class)
+                .setParameter("startDate", start)
+                .setParameter("endDate", end)
+                .getResultList();
     }
 
     @Override
     public Quote createQuote(String company, ReservationConstraints constraints) throws ReservationException {
         try {
-            Quote out = RentalStore.getRental(company).createQuote(constraints, renter);
-            quotes.add(out);
-            return out;
-        } catch(Exception e) {
+            CarRentalCompany crc = entityManager.find(CarRentalCompany.class, company);
+            Quote q = crc.createQuote(constraints, getRenterName());
+            getQuotes().add(q);
+            return q;
+            
+        } catch (Exception e) {
             throw new ReservationException(e);
         }
     }
@@ -60,8 +66,9 @@ public class CarRentalSession implements CarRentalSessionRemote {
                 done.add(RentalStore.getRental(quote.getRentalCompany()).confirmQuote(quote));
             }
         } catch (Exception e) {
-            for(Reservation r:done)
+            for (Reservation r : done) {
                 RentalStore.getRental(r.getRentalCompany()).cancelReservation(r);
+            }
             throw new ReservationException(e);
         }
         return done;
@@ -73,5 +80,13 @@ public class CarRentalSession implements CarRentalSessionRemote {
             throw new IllegalStateException("name already set");
         }
         renter = name;
+    }
+    
+    public String getRenterName(){
+        return renter;
+    }
+    
+    public List<Quote> getQuotes(){
+        return quotes;
     }
 }

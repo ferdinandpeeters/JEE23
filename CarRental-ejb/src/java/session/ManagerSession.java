@@ -11,7 +11,6 @@ import javax.persistence.PersistenceContext;
 import rental.Car;
 import rental.CarRentalCompany;
 import rental.CarType;
-import rental.RentalStore;
 import rental.Reservation;
 
 @Stateless
