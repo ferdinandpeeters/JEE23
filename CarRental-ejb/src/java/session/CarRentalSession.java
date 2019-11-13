@@ -71,8 +71,17 @@ public class CarRentalSession implements CarRentalSessionRemote {
     }
 
     @Override
-    public String getCheapestCarType(Date start, Date end, String region) { //(i)
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getCheapestCarType(Date start, Date end, String region) throws ReservationException { //(i)
+        try {
+            return entityManager.
+                createNamedQuery("getCheapestCarBetweenDatesInRegion", String.class)
+                .setParameter("region", end)
+                .setParameter("startDate", start)
+                .setParameter("endDate", end)
+                .setMaxResults(1).getSingleResult();
+        } catch (Exception e) {
+            throw new ReservationException(e);
+        }
     }
 
     //Getters & Setters
