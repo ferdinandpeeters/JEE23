@@ -30,11 +30,25 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
         loadData("dockx.csv", managerSession);
         loadData("hertz.csv", managerSession);
 
-        CarRentalSessionRemote carRentalSession = main.getNewReservationSession("Steben");
+        /* CarRentalSessionRemote carRentalSession = main.getNewReservationSession("Steben");
         carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "Economy", "Brussels"));
+        carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "MPV", "Brussels"));
         List<Reservation> l = carRentalSession.confirmQuotes();
-        System.out.println(managerSession.getCarIds("Hertz", "MPV"));
-        System.out.println("Client done loading data... Running main.run()...");
+
+        CarRentalSessionRemote carRentalSession2 = main.getNewReservationSession("Dries");
+        carRentalSession2.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "Special", "Brussels"));
+        List<Reservation> l2 = carRentalSession2.confirmQuotes();
+        
+        CarRentalSessionRemote carRentalSession3 = main.getNewReservationSession("Driesjex3");
+        carRentalSession3.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "Premium", "Brussels"));
+        List<Reservation> l3 = carRentalSession2.confirmQuotes();
+
+        System.out.println(managerSession.getBestClients());
+
+        
+        
+        //TODO, werkt niet (?) => System.out.println("\n\n getCarIds " + managerSession.getCarIds("Hertz", "Economy"));
+         */
         // main.run();
     }
 
@@ -87,12 +101,12 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
 
     @Override
     protected int getNumberOfReservationsBy(ManagerSessionRemote ms, String clientName) throws Exception {
-        return ms.getNumberOfReservationsBy(clientName);
+        return ms.getNumberOfReservationsByRenter(clientName);
     }
 
     @Override
     protected int getNumberOfReservationsForCarType(ManagerSessionRemote ms, String carRentalName, String carType) throws Exception {
-        return ms.getNumberOfReservations(carRentalName, carType, 0);
+        return ms.getNumberOfReservationsForCompanyAndType(carRentalName, carType);
     }
 
     //Loading csv data method

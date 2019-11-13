@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -63,19 +64,22 @@ import javax.persistence.OneToMany;
     @NamedQuery(name = "getNumberOfReservationsGivenCarId", query
             = "SELECT COUNT(DISTINCT r.id )"
             + "FROM Reservation r "
-            + "WHERE r.carId = :carId") //(d)
+            + "WHERE r.carId = :carId") //(d) ok
     ,
         
     @NamedQuery(name = "getNumberOfReservationsGivenCarTypeInCompany", query
             = "SELECT COUNT (car.reservations) "
             + "FROM CarRentalCompany crc, IN (crc.cars) car "
-            + "WHERE crc.name = :crcName AND car.type.name = :typeName"), //ok
+            + "WHERE crc.name = :crcName AND car.type.name = :typeName"), // (e) ok
         
     //getNumberOfReservationsBy
     @NamedQuery(name = "getNumberOfReservationsByRenter", query=""),
     
     //getBestClients
-    @NamedQuery(name = "getBestClients", query=""),
+    @NamedQuery(name = "getBestClients", query=
+            "SELECT COUNT (DISTINCT res.id) "
+                    + "FROM Reservation res "
+                    + "GROUP BY res.carRenter"),
     
     //getMostPopularCarTypeIn
     @NamedQuery(name ="getMostPopularCarTypeInCompanyAndYear", query="")
@@ -95,6 +99,7 @@ public class CarRentalCompany {
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Set<CarType> carTypes = new HashSet<CarType>();
 
+    @ElementCollection
     private List<String> regions;
 
     /**

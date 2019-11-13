@@ -41,7 +41,7 @@ public class ManagerSession implements ManagerSessionRemote {
 
     //Data methods
     @Override
-    public Set<CarType> getCarTypes(String company) { //(b)
+    public Set<CarType> getCarTypes(String company) { //(b) ok
         try {
             System.err.println(" no error");
 
@@ -74,30 +74,14 @@ public class ManagerSession implements ManagerSessionRemote {
     }
 
     @Override
-    public int getNumberOfReservations(String company, String type, int carId) { //(d)
+    public int getNumberOfReservationsGivenCarId(String company, String type, int carId) { //(d) ok
         try {
-           return entityManager.createNamedQuery(
-                   "getNumberOfReservationsGivenCarTypeInCompany", Long.class)
-                   .setParameter("carId", carId)
-                   .getSingleResult()
-                   .intValue();
-           
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
-            return 0;
-        }
-    }
-    
-    @Override
-    public int getNumberOfReservationsGivenCarId(String company, String type) { //(e)
-        try {
-           return entityManager.createNamedQuery(
-                   "getNumberOfReservationsGivenCarId", Long.class)
-                   .setParameter("crcName", company)
-                   .setParameter("typeName", type)
-                   .getSingleResult()
-                   .intValue();
-           
+            return entityManager.createNamedQuery(
+                    "getNumberOfReservationsGivenCarId", Long.class)
+                    .setParameter("carId", carId)
+                    .getSingleResult()
+                    .intValue();
+
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
@@ -105,13 +89,36 @@ public class ManagerSession implements ManagerSessionRemote {
     }
 
     @Override
-    public int getNumberOfReservationsBy(String clientName) { //(f)
+    public int getNumberOfReservationsForCompanyAndType(String company, String type) { //(e) OK
+        try {
+            return entityManager.createNamedQuery(
+                    "getNumberOfReservationsGivenCarTypeInCompany", Long.class)
+                    .setParameter("crcName", company)
+                    .setParameter("typeName", type)
+                    .getSingleResult()
+                    .intValue();
+
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+    }
+
+    @Override
+    public int getNumberOfReservationsByRenter(String clientName) { //(f)
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Set<String> getBestClients() { //(g)
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            System.out.println(new HashSet<>(entityManager.createNamedQuery(
+                    "getBestClients", String.class).getResultList())); // TODO
+            return null;
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
     @Override

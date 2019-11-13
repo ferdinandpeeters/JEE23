@@ -21,11 +21,11 @@ public interface ManagerSessionRemote {
 
     public Set<Integer> getCarIds(String company, String type); //(c)
 
-    public int getNumberOfReservations(String company, String type, int id); //(d)
+    public int getNumberOfReservationsGivenCarId(String company, String type, int id); //(d)
 
-    public int getNumberOfReservationsGivenCarId(String company, String type); //(e)
+    public int getNumberOfReservationsForCompanyAndType(String company, String type); //(e)
 
-    public int getNumberOfReservationsBy(String clientName); //(f)
+    public int getNumberOfReservationsByRenter(String clientName); //(f)
 
     public Set<String> getBestClients(); //(g)
 

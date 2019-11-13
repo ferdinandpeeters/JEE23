@@ -75,7 +75,7 @@ public class CarRentalSession implements CarRentalSessionRemote {
         try {
             return entityManager.
                 createNamedQuery("getCheapestCarBetweenDatesInRegion", String.class)
-                .setParameter("region", end)
+                .setParameter("region", region)
                 .setParameter("startDate", start)
                 .setParameter("endDate", end)
                 .setMaxResults(1).getSingleResult();
