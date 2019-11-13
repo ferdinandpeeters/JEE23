@@ -12,9 +12,7 @@ public interface ManagerSessionRemote {
     public Set<CarType> getCarTypes(String company);
     
     public Set<Integer> getCarIds(String company,String type);
-    
-    public int getNumberOfReservations(String company, String type, int carId);
-    
+        
     public int getNumberOfReservations(String company, String type);
     
     
@@ -24,5 +22,11 @@ public interface ManagerSessionRemote {
     public void setRegionsForCompany(String companyName, List<String> regions);
 
     public void addCarForCompany(String companyName, CarType type);
+
+    public Set<String> getBestClients();
+
+    public CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year);
+
+    public int getNumberOfReservationsBy(String clientName);
       
 }
