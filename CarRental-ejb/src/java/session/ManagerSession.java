@@ -16,10 +16,10 @@ import rental.Reservation;
 
 @Stateless
 public class ManagerSession implements ManagerSessionRemote {
-    
+
     @PersistenceContext
     private EntityManager entityManager;
-    
+
     @Override
     public Set<CarType> getCarTypes(String company) {
         try {
@@ -34,7 +34,7 @@ public class ManagerSession implements ManagerSessionRemote {
     public Set<Integer> getCarIds(String company, String type) {
         Set<Integer> out = new HashSet<Integer>();
         try {
-            for(Car c: RentalStore.getRental(company).getCars(type)){
+            for (Car c : RentalStore.getRental(company).getCars(type)) {
                 out.add(c.getId());
             }
         } catch (IllegalArgumentException ex) {
@@ -58,7 +58,7 @@ public class ManagerSession implements ManagerSessionRemote {
     public int getNumberOfReservations(String company, String type) {
         Set<Reservation> out = new HashSet<Reservation>();
         try {
-            for(Car c: RentalStore.getRental(company).getCars(type)){
+            for (Car c : RentalStore.getRental(company).getCars(type)) {
                 out.addAll(c.getReservations());
             }
         } catch (IllegalArgumentException ex) {
@@ -71,19 +71,22 @@ public class ManagerSession implements ManagerSessionRemote {
     @Override
     public void createNewCompany(String companyName) {
         CarRentalCompany newCompany = new CarRentalCompany(companyName);
+        System.out.println("Server created new company with no cars & regions: " + companyName);
         entityManager.persist(newCompany);
     }
 
     @Override
     public void setRegionsForCompany(String companyName, List<String> regions) {
-       CarRentalCompany company = entityManager.find(CarRentalCompany.class, companyName);
-       company.setRegions(regions);
+        CarRentalCompany company = entityManager.find(CarRentalCompany.class, companyName);
+        company.setRegions(regions);
+        System.out.println("Server set regions company: " + companyName + " " + regions);
     }
 
     @Override
     public void addCarForCompany(String companyName, CarType type) {
-       CarRentalCompany company = entityManager.find(CarRentalCompany.class, companyName);
-       company.addCar(type);
+        CarRentalCompany company = entityManager.find(CarRentalCompany.class, companyName);
+        company.addCar(type);
+        System.out.println("Server added car to company:" + companyName + " " + type);
     }
 
 }

@@ -37,3 +37,9 @@ CarRental-ejb/build/generated-sources/ap-source-output/rental/Car_.java
 CarRental-ejb/build/generated-sources/ap-source-output/rental/CarRentalCompany_.java
 CarRental-ejb/build/classes/rental/Car_.class
 CarRental-ejb/build/classes/rental/CarRentalCompany_.class
+CarRental-ejb/build/classes/resouces.res
+CarRental-ejb/build/classes/CarRental-lib.jar
+CarRental-client/nbproject/project.properties
+CarRental-ejb/build/classes/resouces.res
+CarRental-ejb/build/classes/session/ManagerSession.class
+CarRental/nbproject/project.properties
