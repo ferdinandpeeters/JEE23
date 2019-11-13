@@ -25,23 +25,23 @@ import javax.persistence.OneToMany;
     
     
     @NamedQuery(name = "getAvailableCarTypes", query
-            = "SELECT DISTINCT car.type FROM Car car"
+            = "SELECT DISTINCT car.type FROM Car car "
             + "WHERE car.id NOT IN "
             + "("
-            + "SELECT res.carId FROM Reservations res"
+            + "SELECT res.carId FROM Reservation res "
             + "WHERE res.startDate <= :endDate AND res.endDate <= :startDate"
             + ")"),
     
     //ManagerSession Queries
     @NamedQuery(name="getCarTypesOfCompany", query= 
-            "SELECT DISTINCT crc.carTypes"
-          + "FROM CarRentalCompany crc"
+            "SELECT DISTINCT crc.carTypes "
+          + "FROM CarRentalCompany crc "
           + "WHERE crc.name = :name"),
     
     @NamedQuery(name="getCarIdsOfGivenTypeAndCompany", query=
-            "SELECT DISTINCT car.id"
-                    + "FROM CarRentalCompany crc JOIN crc.cars car JOIN crc.carTypes type "
-                    + "WHERE crc.name = :companyName AND type.name = :typeName"),
+            "SELECT DISTINCT car.id "
+                    + "FROM CarRentalCompany crc JOIN crc.cars car JOIN crc.carTypes t "
+                    + "WHERE crc.name = :companyName AND t.name = :typeName"),
     
     //asked in assignment but not used in app
     @NamedQuery(name="getNumberOfReservationsGivenCarId", query=
