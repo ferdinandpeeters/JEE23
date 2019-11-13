@@ -45,13 +45,16 @@ public class ManagerSession implements ManagerSessionRemote {
     @Override
     public Set<CarType> getCarTypes(String company) {
         try {
-            return new HashSet<>(
+                        System.err.println(" no error");
+
+            return new HashSet<CarType>(
                     entityManager.createNamedQuery(
                             "getCarTypesOfCompany", CarType.class)
                             .setParameter("name", company)
                             .getResultList());
 
         } catch (IllegalArgumentException ex) {
+            System.err.println("error");
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
