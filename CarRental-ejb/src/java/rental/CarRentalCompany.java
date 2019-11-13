@@ -21,7 +21,8 @@ import javax.persistence.OneToMany;
 @NamedQueries({
     //CarRentalSession Queries
     @NamedQuery(name = "getAllCompanies", query
-            = "SELECT crc.name FROM CarRentalCompany crc"),
+            = "SELECT crc.name FROM CarRentalCompany crc")
+    ,
     
     
     @NamedQuery(name = "getAvailableCarTypes", query
@@ -30,29 +31,33 @@ import javax.persistence.OneToMany;
             + "("
             + "SELECT res.carId FROM Reservation res "
             + "WHERE res.startDate <= :endDate AND res.endDate <= :startDate"
-            + ")"),
+            + ")")
+    ,
     
     //ManagerSession Queries
-    @NamedQuery(name="getCarTypesOfCompany", query= 
-            "SELECT DISTINCT crc.carTypes "
-          + "FROM CarRentalCompany crc "
-          + "WHERE crc.name = :name"),
+    @NamedQuery(name = "getCarTypesOfCompany", query
+            = "SELECT DISTINCT crc.carTypes "
+            + "FROM CarRentalCompany crc "
+            + "WHERE crc.name = :name")
+    ,
     
-    @NamedQuery(name="getCarIdsOfGivenTypeAndCompany", query=
-            "SELECT DISTINCT car.id "
-                    + "FROM CarRentalCompany crc JOIN crc.cars car JOIN crc.carTypes t "
-                    + "WHERE crc.name = :companyName AND t.name = :typeName"),
+    @NamedQuery(name = "getCarIdsOfGivenTypeAndCompany", query
+            = "SELECT DISTINCT car.id "
+            + "FROM CarRentalCompany crc, IN (crc.cars) car, IN (crc.carTypes) t "
+            + "WHERE crc.name = :companyName AND t.name = :typeName")
+    ,
     
     //asked in assignment but not used in app
-    @NamedQuery(name="getNumberOfReservationsGivenCarId", query=
-             "SELECT COUNT(DISTINCT r.id )"
-                     + "FROM Reservation r "
-                     + "WHERE r.carId = :carId"),
+    @NamedQuery(name = "getNumberOfReservationsGivenCarId", query
+            = "SELECT COUNT(DISTINCT r.id )"
+            + "FROM Reservation r "
+            + "WHERE r.carId = :carId")
+    ,
         
-    @NamedQuery(name="getNumberOfReservationsGivenCarTypeInCompany", query=
-            "SELECT "
-                    + ""
-                    + "")
+    @NamedQuery(name = "getNumberOfReservationsGivenCarTypeInCompany", query
+            = "SELECT COUNT (car.reservations) "
+            + "FROM CarRentalCompany crc, IN (crc.cars) car "
+            + "WHERE crc.name = :crcName AND car.type.name = :typeName") //ok
 })
 
 @Entity
@@ -155,6 +160,7 @@ public class CarRentalCompany {
      */
     public void addCar(CarType type) {
         cars.add(new Car(type));
+        carTypes.add(type);
     }
 
     public Car getCar(int uid) {

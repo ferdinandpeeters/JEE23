@@ -25,18 +25,16 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
     }
 
     public static void main(String[] args) throws Exception {
-        // TODO: use updated manager interface to load cars into companies
-
         Main main = new Main("trips");
-
         ManagerSessionRemote managerSession = main.getNewManagerSession("manager");
-
-        System.out.println("Client got manager session (" + managerSession + "). Starting to load data now...");
         loadData("dockx.csv", managerSession);
         loadData("hertz.csv", managerSession);
-        System.out.println("Client done loading data... Running main.run()...");
 
-       
+        CarRentalSessionRemote carRentalSession = main.getNewReservationSession("Steben");
+//        carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "Economy", "Brussels"));
+ //       carRentalSession.confirmQuotes();
+
+        System.out.println("Client done loading data... Running main.run()...");
         // main.run();
     }
 

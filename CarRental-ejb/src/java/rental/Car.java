@@ -22,7 +22,8 @@ public class Car {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private CarType type;
 
-    @OneToMany( fetch = FetchType.LAZY)
+    //TODO bidirectional id thingy
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Set<Reservation> reservations;
 
     /**

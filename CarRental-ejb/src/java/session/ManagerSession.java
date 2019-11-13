@@ -31,21 +31,19 @@ public class ManagerSession implements ManagerSessionRemote {
     public void setRegionsForCompany(String companyName, List<String> regions) {
         CarRentalCompany company = entityManager.find(CarRentalCompany.class, companyName);
         company.setRegions(regions);
-        System.out.println("Server set regions company: " + companyName + " " + regions);
     }
 
     @Override
     public void addCarForCompany(String companyName, CarType type) {
         CarRentalCompany company = entityManager.find(CarRentalCompany.class, companyName);
         company.addCar(type);
-        System.out.println("Server added car to company:" + companyName + " " + type);
     }
 
     //Data methods
     @Override
     public Set<CarType> getCarTypes(String company) {
         try {
-                        System.err.println(" no error");
+            System.err.println(" no error");
 
             return new HashSet<CarType>(
                     entityManager.createNamedQuery(
@@ -77,16 +75,23 @@ public class ManagerSession implements ManagerSessionRemote {
 
     @Override
     public int getNumberOfReservations(String company, String type) {
-        Set<Reservation> out = new HashSet<Reservation>();
         try {
-            // for (Car c : RentalStore.getRental(company).getCars(type)) {
-            //    out.addAll(c.getReservations());
-            //}
+           return entityManager.createNamedQuery(
+                   "getNumberOfReservationsGivenCarTypeInCompany", Long.class)
+                   .setParameter("crcName", company)
+                   .setParameter("typeName", type)
+                   .getSingleResult()
+                   .intValue();
+           
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         }
-        return out.size();
+    }
+
+    @Override
+    public int getNumberOfReservationsBy(String clientName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -99,8 +104,4 @@ public class ManagerSession implements ManagerSessionRemote {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public int getNumberOfReservationsBy(String clientName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

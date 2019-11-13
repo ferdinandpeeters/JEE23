@@ -55,15 +55,16 @@ public class CarRentalSession implements CarRentalSessionRemote {
 
     @Override
     public List<Reservation> confirmQuotes() throws ReservationException {
-        List<Reservation> done = new LinkedList<Reservation>();
+        List<Reservation> done = new LinkedList<>();
+        System.out.println("Server confirming quotes...");
         try {
             for (Quote quote : quotes) {
-                //        done.add(RentalStore.getRental(quote.getRentalCompany()).confirmQuote(quote));
+                CarRentalCompany crc = entityManager.find(CarRentalCompany.class, quote.getRentalCompany());
+                done.add(crc.confirmQuote(quote));
+                System.out.println("Server quote confirmed!");
             }
         } catch (Exception e) {
-            for (Reservation r : done) {
-                //      RentalStore.getRental(r.getRentalCompany()).cancelReservation(r);
-            }
+            //TODO transaction
             throw new ReservationException(e);
         }
         return done;
