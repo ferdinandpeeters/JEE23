@@ -41,7 +41,7 @@ public class ManagerSession implements ManagerSessionRemote {
 
     //Data methods
     @Override
-    public Set<CarType> getCarTypes(String company) {
+    public Set<CarType> getCarTypes(String company) { //(b)
         try {
             System.err.println(" no error");
 
@@ -59,13 +59,13 @@ public class ManagerSession implements ManagerSessionRemote {
     }
 
     @Override
-    public Set<Integer> getCarIds(String company, String type) {
+    public Set<Integer> getCarIds(String company, String type) { //(c)
         try {
             return new HashSet<>(
                     entityManager.createNamedQuery(
                             "getCarIdsOfGivenTypeAndCompany", Integer.class)
                             .setParameter("typeName", type)
-                            .setParameter("crcName", company)
+                            .setParameter("companyName", company)
                             .getResultList());
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,10 +74,25 @@ public class ManagerSession implements ManagerSessionRemote {
     }
 
     @Override
-    public int getNumberOfReservations(String company, String type) {
+    public int getNumberOfReservations(String company, String type, int carId) { //(d)
         try {
            return entityManager.createNamedQuery(
                    "getNumberOfReservationsGivenCarTypeInCompany", Long.class)
+                   .setParameter("carId", carId)
+                   .getSingleResult()
+                   .intValue();
+           
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+    }
+    
+    @Override
+    public int getNumberOfReservationsGivenCarId(String company, String type) { //(e)
+        try {
+           return entityManager.createNamedQuery(
+                   "getNumberOfReservationsGivenCarId", Long.class)
                    .setParameter("crcName", company)
                    .setParameter("typeName", type)
                    .getSingleResult()
@@ -104,12 +119,12 @@ public class ManagerSession implements ManagerSessionRemote {
     }
 
     @Override
-    public Set<String> getBestClients() {
+    public Set<String> getBestClients() { //(g)
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year) {
+    public CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year) { //(h)
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

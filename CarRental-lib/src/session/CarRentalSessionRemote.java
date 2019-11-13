@@ -15,7 +15,7 @@ public interface CarRentalSessionRemote {
     
     public void setRenterName(String name);
     
-    public Set<String> getAllRentalCompanies();
+    public Set<String> getAllRentalCompanies(); //(a)
     
     public List<CarType> getAvailableCarTypes(Date start, Date end);
     
@@ -25,6 +25,7 @@ public interface CarRentalSessionRemote {
     
     public List<Reservation> confirmQuotes() throws ReservationException;
 
-    public String getCheapestCarType(Date start, Date end, String region) throws ReservationException ;
+    public String getCheapestCarType(Date start, Date end, String region) throws ReservationException; //(i)
+
     
 }

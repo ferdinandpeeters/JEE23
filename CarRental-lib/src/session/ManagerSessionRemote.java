@@ -17,16 +17,18 @@ public interface ManagerSessionRemote {
     public void addCarForCompany(String companyName, CarType type);
 
     //Data methods
-    public Set<CarType> getCarTypes(String company);
+    public Set<CarType> getCarTypes(String company); //(b)
 
-    public Set<Integer> getCarIds(String company, String type);
+    public Set<Integer> getCarIds(String company, String type); //(c)
 
-    public int getNumberOfReservations(String company, String type);
+    public int getNumberOfReservations(String company, String type, int id); //(d)
 
-    public Set<String> getBestClients();
+    public int getNumberOfReservationsGivenCarId(String company, String type); //(e)
 
-    public CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year);
+    public int getNumberOfReservationsBy(String clientName); //(f)
 
-    public int getNumberOfReservationsBy(String clientName);
+    public Set<String> getBestClients(); //(g)
+
+    public CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year); //(h)
 
 }

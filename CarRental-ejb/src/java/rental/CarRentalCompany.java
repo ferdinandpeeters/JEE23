@@ -21,7 +21,7 @@ import javax.persistence.OneToMany;
 @NamedQueries({
     //CarRentalSession Queries
     @NamedQuery(name = "getAllCompanies", query
-            = "SELECT crc.name FROM CarRentalCompany crc")
+            = "SELECT crc.name FROM CarRentalCompany crc") //(a) OK
     ,
     
     
@@ -43,26 +43,27 @@ import javax.persistence.OneToMany;
             + "WHERE res.startDate <= :endDate AND res.endDate <= :startDate"
             + ") "
             + "ORDER BY car.type.rentalPricePerDay ASC"),
-    
+
     
     //ManagerSession Queries
     @NamedQuery(name = "getCarTypesOfCompany", query
             = "SELECT DISTINCT crc.carTypes "
             + "FROM CarRentalCompany crc "
-            + "WHERE crc.name = :name")
+            + "WHERE crc.name = :name") //(b) OK
     ,
     
+    //asked in assignment
+    //session function created but not needed in client overrides
     @NamedQuery(name = "getCarIdsOfGivenTypeAndCompany", query
             = "SELECT DISTINCT car.id "
-            + "FROM CarRentalCompany crc, IN (crc.cars) car, IN (crc.carTypes) t "
+            + "FROM CarRentalCompany crc, IN (crc.cars) car, IN (crc.carTypes) t " //(c) not ok?
             + "WHERE crc.name = :companyName AND t.name = :typeName")
     ,
     
-    //asked in assignment but not used in app
     @NamedQuery(name = "getNumberOfReservationsGivenCarId", query
             = "SELECT COUNT(DISTINCT r.id ) "
             + "FROM Reservation r "
-            + "WHERE r.carId = :carId")
+            + "WHERE r.carId = :carId") //(d)
     ,
         
     @NamedQuery(name = "getNumberOfReservationsGivenCarTypeInCompany", query

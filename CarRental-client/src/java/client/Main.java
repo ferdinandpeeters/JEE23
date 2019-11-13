@@ -31,9 +31,9 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
         loadData("hertz.csv", managerSession);
 
         CarRentalSessionRemote carRentalSession = main.getNewReservationSession("Steben");
-//        carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "Economy", "Brussels"));
- //       carRentalSession.confirmQuotes();
-
+        carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "Economy", "Brussels"));
+        List<Reservation> l = carRentalSession.confirmQuotes();
+        System.out.println(managerSession.getCarIds("Hertz", "MPV"));
         System.out.println("Client done loading data... Running main.run()...");
         // main.run();
     }
@@ -59,7 +59,7 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
 
     @Override
     protected String getCheapestCarType(CarRentalSessionRemote session, Date start, Date end, String region) throws Exception {
-        return session.getCheapestCar(start, end, region);
+        return session.getCheapestCarType(start, end, region);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
 
     @Override
     protected int getNumberOfReservationsForCarType(ManagerSessionRemote ms, String carRentalName, String carType) throws Exception {
-        return ms.getNumberOfReservations(carRentalName, carType);
+        return ms.getNumberOfReservations(carRentalName, carType, 0);
     }
 
     //Loading csv data method
