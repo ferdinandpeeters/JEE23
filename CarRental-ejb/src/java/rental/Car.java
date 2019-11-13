@@ -22,7 +22,7 @@ public class Car {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private CarType type;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany( fetch = FetchType.LAZY)
     private Set<Reservation> reservations;
 
     /**

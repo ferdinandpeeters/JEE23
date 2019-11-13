@@ -35,7 +35,7 @@ import javax.persistence.OneToMany;
             + "SELECT res.carId FROM Reservations res"
             + "WHERE res.startDate <= :endDate AND res.endDate <= :startDate"
             + ")"),
-
+    
     //ManagerSession Queries
 })
 
