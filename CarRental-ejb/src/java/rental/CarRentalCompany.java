@@ -21,12 +21,8 @@ import javax.persistence.OneToMany;
 @NamedQueries({
     //CarRentalSession Queries
     @NamedQuery(name = "getAllCompanies", query
-            = "SELECT crc FROM CarRentalCompany crc")
-    ,
-
-    @NamedQuery(name = "getAvailableCarTypes", query
-            = "")
-    ,
+            = "SELECT crc FROM CarRentalCompany crc"),
+    
     
     @NamedQuery(name = "getAvailableCarTypes", query
             = "SELECT DISTINCT car.type FROM Car car"
@@ -37,6 +33,17 @@ import javax.persistence.OneToMany;
             + ")"),
     
     //ManagerSession Queries
+    @NamedQuery(name="getCarTypesOfCompany", query= 
+            "SELECT DISTINCT crc.carTypes"
+          + "FROM CarRentalCompany crc"
+          + "WHERE crc.name = :name"),
+    
+    @NamedQuery(name="getCarIdsOfGivenTypeAndCompany", query=
+            "SELECT"
+                    + "FROM CarRentalCompany crc JOIN Car car "
+                    + "WHERE car.type.name = :typeName AND crc.name := crcName")
+        
+        
 })
 
 @Entity
