@@ -36,9 +36,6 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
         loadData("hertz.csv", managerSession);
         System.out.println("Client done loading data... Running main.run()...");
 
-        
-        CarRentalSessionRemote carRentalSession = main.getNewReservationSession("Driesje");
-        System.out.println(carRentalSession.getAllRentalCompanies());
        
         // main.run();
     }

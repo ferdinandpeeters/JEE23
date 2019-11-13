@@ -21,7 +21,7 @@ import javax.persistence.OneToMany;
 @NamedQueries({
     //CarRentalSession Queries
     @NamedQuery(name = "getAllCompanies", query
-            = "SELECT crc FROM CarRentalCompany crc"),
+            = "SELECT crc.name FROM CarRentalCompany crc"),
     
     
     @NamedQuery(name = "getAvailableCarTypes", query
@@ -47,8 +47,7 @@ import javax.persistence.OneToMany;
              "SELECT COUNT (DISTINCT r.id ) "
                      + "FROM Reservation r "
                      + "WHERE r.carId = :carId")
-        
-        
+    
 })
 
 @Entity

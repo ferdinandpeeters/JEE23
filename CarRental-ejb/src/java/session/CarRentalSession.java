@@ -26,7 +26,7 @@ public class CarRentalSession implements CarRentalSessionRemote {
 
     @Override
     public Set<String> getAllRentalCompanies() {
-        return new HashSet<String>(
+        return new HashSet<>(
                 entityManager.createNamedQuery("getAllCompanies").
                         getResultList());
     }
