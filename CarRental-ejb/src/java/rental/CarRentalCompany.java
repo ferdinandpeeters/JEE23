@@ -43,11 +43,16 @@ import javax.persistence.OneToMany;
                     + "FROM CarRentalCompany crc JOIN crc.cars car JOIN crc.carTypes type "
                     + "WHERE crc.name = :companyName AND type.name = :typeName"),
     
-    @NamedQuery(name="getNumberOfReservations", query=
+    //asked in assignment but not used in app
+    @NamedQuery(name="getNumberOfReservationsGivenCarId", query=
              "SELECT COUNT(DISTINCT r.id )"
                      + "FROM Reservation r "
-                     + "WHERE r.carId = :carId")
+                     + "WHERE r.carId = :carId"),
         
+    @NamedQuery(name="getNumberOfReservationsGivenCarTypeInCompany", query=
+            "SELECT "
+                    + ""
+                    + "")
         
 })
 

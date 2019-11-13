@@ -100,5 +100,4 @@ public class ManagerSession implements ManagerSessionRemote {
     public int getNumberOfReservationsBy(String clientName) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 }
