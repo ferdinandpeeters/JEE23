@@ -30,8 +30,11 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
         Main main = new Main("trips");
 
         ManagerSessionRemote managerSession = main.getNewManagerSession("manager");
-        loadData("dockx", managerSession);
-        loadData("hertz", managerSession);
+       
+        System.out.println("Client got manager session (" + managerSession + "). Starting to load data now...");
+        loadData("dockx.csv", managerSession);
+        loadData("hertz.csv", managerSession);
+        System.out.println("Client done loading data... Running main.run()...");
 
         main.run();
 
@@ -40,14 +43,16 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
     //Session methods
     @Override
     protected CarRentalSessionRemote getNewReservationSession(String name) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        CarRentalSessionRemote session = (CarRentalSessionRemote) (new InitialContext()).lookup(CarRentalSessionRemote.class.getName());
+        session.setRenterName(name);
+        return session;
     }
 
     @Override
     protected ManagerSessionRemote getNewManagerSession(String name) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (ManagerSessionRemote) (new InitialContext()).lookup(ManagerSessionRemote.class.getName());
     }
-    
+
     //Data methods
     @Override
     protected Set<String> getBestClients(ManagerSessionRemote ms) throws Exception {
@@ -63,7 +68,6 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
     protected CarType getMostPopularCarTypeIn(ManagerSessionRemote ms, String carRentalCompanyName, int year) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 
     @Override
     protected void getAvailableCarTypes(CarRentalSessionRemote session, Date start, Date end) throws Exception {

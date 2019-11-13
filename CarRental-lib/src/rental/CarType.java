@@ -23,7 +23,7 @@ public class CarType implements Serializable{
     
     
     public CarType() {
-    //no arguments for beans
+        this("", 0, 0, 0, false);
     }
 
     public CarType(String name, int nbOfSeats, float trunkSpace, double rentalPricePerDay, boolean smokingAllowed) {
