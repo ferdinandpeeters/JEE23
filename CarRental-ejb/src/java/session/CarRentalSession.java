@@ -25,7 +25,7 @@ public class CarRentalSession implements CarRentalSessionRemote {
     private List<Quote> quotes = new LinkedList<Quote>();
 
     @Override
-    public Set<String> getAllRentalCompanies() {
+    public Set<String> getAllRentalCompanies() { //(a)
         return new HashSet<>(
                 entityManager.createNamedQuery("getAllCompanies").
                         getResultList());
@@ -71,7 +71,7 @@ public class CarRentalSession implements CarRentalSessionRemote {
     }
 
     @Override
-    public String getCheapestCar(Date start, Date end, String region) {
+    public String getCheapestCarType(Date start, Date end, String region) { //(i)
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
