@@ -22,7 +22,12 @@ public class ManagerSession implements ManagerSessionRemote {
     @Override
     public Set<CarType> getCarTypes(String company) {
         try {
-            return new HashSet<CarType>(RentalStore.getRental(company).getAllTypes());
+            return new HashSet<>(
+                    entityManager.createNamedQuery(
+                            "getCarTypesOfCompany", CarType.class)
+                            .setParameter("name", company)
+                            .getResultList());
+
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -31,35 +36,37 @@ public class ManagerSession implements ManagerSessionRemote {
 
     @Override
     public Set<Integer> getCarIds(String company, String type) {
-        Set<Integer> out = new HashSet<Integer>();
         try {
-            for (Car c : RentalStore.getRental(company).getCars(type)) {
-                out.add(c.getId());
-            }
+            return new HashSet<>(
+                    entityManager.createNamedQuery(
+                            "getCarIdsOfGivenTypeAndCompany", Integer.class)
+                            .setParameter("typeName", type)
+                            .setParameter("crcName", company)
+                            .getResultList());
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-        return out;
     }
 
     @Override
     public int getNumberOfReservations(String company, String type, int id) {
         try {
-            return RentalStore.getRental(company).getCar(id).getReservations().size();
+            // return RentalStore.getRental(company).getCar(id).getReservations().size();
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         }
+        return 0;//TODO DELETE
     }
 
     @Override
     public int getNumberOfReservations(String company, String type) {
         Set<Reservation> out = new HashSet<Reservation>();
         try {
-            for (Car c : RentalStore.getRental(company).getCars(type)) {
-                out.addAll(c.getReservations());
-            }
+            // for (Car c : RentalStore.getRental(company).getCars(type)) {
+            //    out.addAll(c.getReservations());
+            //}
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return 0;

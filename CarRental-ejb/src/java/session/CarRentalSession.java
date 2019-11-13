@@ -63,11 +63,11 @@ public class CarRentalSession implements CarRentalSessionRemote {
         List<Reservation> done = new LinkedList<Reservation>();
         try {
             for (Quote quote : quotes) {
-                done.add(RentalStore.getRental(quote.getRentalCompany()).confirmQuote(quote));
+        //        done.add(RentalStore.getRental(quote.getRentalCompany()).confirmQuote(quote));
             }
         } catch (Exception e) {
             for (Reservation r : done) {
-                RentalStore.getRental(r.getRentalCompany()).cancelReservation(r);
+          //      RentalStore.getRental(r.getRentalCompany()).cancelReservation(r);
             }
             throw new ReservationException(e);
         }
