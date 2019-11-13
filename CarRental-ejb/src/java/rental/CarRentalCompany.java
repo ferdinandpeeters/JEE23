@@ -62,7 +62,7 @@ import javax.persistence.OneToMany;
     ,
     
     @NamedQuery(name = "getNumberOfReservationsGivenCarId", query
-            = "SELECT COUNT(DISTINCT r.id )"
+            = "SELECT COUNT(DISTINCT r.id ) "
             + "FROM Reservation r "
             + "WHERE r.carId = :carId") //(d) ok
     ,
@@ -73,7 +73,10 @@ import javax.persistence.OneToMany;
             + "WHERE crc.name = :crcName AND car.type.name = :typeName"), // (e) ok
         
     //getNumberOfReservationsBy
-    @NamedQuery(name = "getNumberOfReservationsByRenter", query=""),
+    @NamedQuery(name = "getNumberOfReservationsByRenter", query
+            ="SELECT COUNT(DISTINCT res.id ) "
+            + "FROM Reservation res "
+            + "WHERE res.carRenter = :renterName "),
     
     //getBestClients
     @NamedQuery(name = "getBestClients", query=
@@ -82,7 +85,18 @@ import javax.persistence.OneToMany;
                     + "GROUP BY res.carRenter"),
     
     //getMostPopularCarTypeIn
-    @NamedQuery(name ="getMostPopularCarTypeInCompanyAndYear", query="")
+    @NamedQuery(name ="getMostPopularCarTypeInCompanyAndYear", query
+            
+            ="SELECT res.carType, COUNT(DISTINCT res.id) AS num  "
+            + "FROM Reservation res "
+            + "WHERE   res.rentalCompany = :companyName "
+                    + "AND ( EXTRACT(YEAR FROM res.startDate)= :year  OR  EXTRACT(YEAR FROM res.endDate)=:year ) "
+            + "GROUP BY   res.carType "
+            + "ORDER BY   num DESC "
+           ),
+    
+    @NamedQuery(name="getTypeOfName", query=
+            "SELECT t FROM CarType t WHERE t.name = :name")
 })
 
 @Entity

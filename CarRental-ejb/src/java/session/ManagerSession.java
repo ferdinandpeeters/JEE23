@@ -104,9 +104,17 @@ public class ManagerSession implements ManagerSessionRemote {
         }
     }
 
-    @Override
-    public int getNumberOfReservationsByRenter(String clientName) { //(f)
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int getNumberOfReservationsBy(String clientName) {
+        try {
+             return entityManager.createNamedQuery(
+                   "getNumberOfReservationsByRenter", Long.class)
+                   .setParameter("renterName", clientName)
+                   .getSingleResult()
+                   .intValue();
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
     }
 
     @Override
@@ -123,7 +131,18 @@ public class ManagerSession implements ManagerSessionRemote {
 
     @Override
     public CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year) { //(h)
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+             List<Object[]> result= entityManager.createNamedQuery(
+                   "getMostPopularCarTypeInCompanyAndYear")
+                   .setParameter("companyName", carRentalCompanyName)
+                   .setParameter("year", year)
+                   .setMaxResults(1).getResultList();
+             String type = (String) result.get(0)[0];
+             return entityManager.createNamedQuery("getTypeOfName", CarType.class).setParameter("name", type).getResultList().get(0);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
 }
