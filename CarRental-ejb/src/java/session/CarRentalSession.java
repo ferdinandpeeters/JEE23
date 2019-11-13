@@ -47,15 +47,10 @@ public class CarRentalSession implements CarRentalSessionRemote {
             Quote q = crc.createQuote(constraints, getRenterName());
             getQuotes().add(q);
             return q;
-            
+
         } catch (Exception e) {
             throw new ReservationException(e);
         }
-    }
-
-    @Override
-    public List<Quote> getCurrentQuotes() {
-        return quotes;
     }
 
     @Override
@@ -63,15 +58,26 @@ public class CarRentalSession implements CarRentalSessionRemote {
         List<Reservation> done = new LinkedList<Reservation>();
         try {
             for (Quote quote : quotes) {
-        //        done.add(RentalStore.getRental(quote.getRentalCompany()).confirmQuote(quote));
+                //        done.add(RentalStore.getRental(quote.getRentalCompany()).confirmQuote(quote));
             }
         } catch (Exception e) {
             for (Reservation r : done) {
-          //      RentalStore.getRental(r.getRentalCompany()).cancelReservation(r);
+                //      RentalStore.getRental(r.getRentalCompany()).cancelReservation(r);
             }
             throw new ReservationException(e);
         }
         return done;
+    }
+
+    @Override
+    public String getCheapestCar(Date start, Date end, String region) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    //Getters & Setters
+    @Override
+    public List<Quote> getCurrentQuotes() {
+        return quotes;
     }
 
     @Override
@@ -81,12 +87,13 @@ public class CarRentalSession implements CarRentalSessionRemote {
         }
         renter = name;
     }
-    
-    public String getRenterName(){
+
+    public String getRenterName() {
         return renter;
     }
-    
-    public List<Quote> getQuotes(){
+
+    public List<Quote> getQuotes() {
         return quotes;
     }
+
 }

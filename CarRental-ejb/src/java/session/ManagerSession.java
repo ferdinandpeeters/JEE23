@@ -19,6 +19,29 @@ public class ManagerSession implements ManagerSessionRemote {
     @PersistenceContext
     private EntityManager entityManager;
 
+    //Creating company methods
+    @Override
+    public void createNewCompany(String companyName) {
+        CarRentalCompany newCompany = new CarRentalCompany(companyName);
+        System.out.println("Server created new company with no cars & regions: " + companyName);
+        entityManager.persist(newCompany);
+    }
+
+    @Override
+    public void setRegionsForCompany(String companyName, List<String> regions) {
+        CarRentalCompany company = entityManager.find(CarRentalCompany.class, companyName);
+        company.setRegions(regions);
+        System.out.println("Server set regions company: " + companyName + " " + regions);
+    }
+
+    @Override
+    public void addCarForCompany(String companyName, CarType type) {
+        CarRentalCompany company = entityManager.find(CarRentalCompany.class, companyName);
+        company.addCar(type);
+        System.out.println("Server added car to company:" + companyName + " " + type);
+    }
+
+    //Data methods
     @Override
     public Set<CarType> getCarTypes(String company) {
         try {
@@ -50,17 +73,6 @@ public class ManagerSession implements ManagerSessionRemote {
     }
 
     @Override
-    public int getNumberOfReservations(String company, String type, int id) {
-        try {
-            // return RentalStore.getRental(company).getCar(id).getReservations().size();
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
-            return 0;
-        }
-        return 0;//TODO DELETE
-    }
-
-    @Override
     public int getNumberOfReservations(String company, String type) {
         Set<Reservation> out = new HashSet<Reservation>();
         try {
@@ -75,24 +87,18 @@ public class ManagerSession implements ManagerSessionRemote {
     }
 
     @Override
-    public void createNewCompany(String companyName) {
-        CarRentalCompany newCompany = new CarRentalCompany(companyName);
-        System.out.println("Server created new company with no cars & regions: " + companyName);
-        entityManager.persist(newCompany);
+    public Set<String> getBestClients() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void setRegionsForCompany(String companyName, List<String> regions) {
-        CarRentalCompany company = entityManager.find(CarRentalCompany.class, companyName);
-        company.setRegions(regions);
-        System.out.println("Server set regions company: " + companyName + " " + regions);
+    public CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void addCarForCompany(String companyName, CarType type) {
-        CarRentalCompany company = entityManager.find(CarRentalCompany.class, companyName);
-        company.addCar(type);
-        System.out.println("Server added car to company:" + companyName + " " + type);
+    public int getNumberOfReservationsBy(String clientName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

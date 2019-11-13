@@ -30,14 +30,17 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
         Main main = new Main("trips");
 
         ManagerSessionRemote managerSession = main.getNewManagerSession("manager");
-       
+
         System.out.println("Client got manager session (" + managerSession + "). Starting to load data now...");
         loadData("dockx.csv", managerSession);
         loadData("hertz.csv", managerSession);
         System.out.println("Client done loading data... Running main.run()...");
 
-       // main.run();
+        for (CarType ct : managerSession.getCarTypes("Dockx")) {
+            System.out.println("ct " + ct);
+        }
 
+        // main.run();
     }
 
     //Session methods
@@ -56,42 +59,45 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
     //Data methods
     @Override
     protected Set<String> getBestClients(ManagerSessionRemote ms) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ms.getBestClients();
     }
 
     @Override
     protected String getCheapestCarType(CarRentalSessionRemote session, Date start, Date end, String region) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return session.getCheapestCar(start, end, region);
     }
 
     @Override
     protected CarType getMostPopularCarTypeIn(ManagerSessionRemote ms, String carRentalCompanyName, int year) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ms.getMostPopularCarTypeIn(carRentalCompanyName, year);
     }
 
     @Override
     protected void getAvailableCarTypes(CarRentalSessionRemote session, Date start, Date end) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("CLIENT getAvailableCarTypes");
+        for (CarType ct : session.getAvailableCarTypes(start, end)) {
+            System.out.println(ct);
+        }
     }
 
     @Override
     protected void createQuote(CarRentalSessionRemote session, String name, Date start, Date end, String carType, String region) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        session.createQuote(region, new ReservationConstraints(start, end, carType, region));
     }
 
     @Override
     protected List<Reservation> confirmQuotes(CarRentalSessionRemote session, String name) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return session.confirmQuotes();
     }
 
     @Override
     protected int getNumberOfReservationsBy(ManagerSessionRemote ms, String clientName) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ms.getNumberOfReservationsBy(clientName);
     }
 
     @Override
     protected int getNumberOfReservationsForCarType(ManagerSessionRemote ms, String carRentalName, String carType) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ms.getNumberOfReservations(carRentalName, carType);
     }
 
     //Loading csv data method
