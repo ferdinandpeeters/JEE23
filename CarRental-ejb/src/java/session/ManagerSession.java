@@ -91,7 +91,16 @@ public class ManagerSession implements ManagerSessionRemote {
 
     @Override
     public int getNumberOfReservationsBy(String clientName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+             return entityManager.createNamedQuery(
+                   "getNumberOfReservationsByRenter", Long.class)
+                   .setParameter("renterName", clientName)
+                   .getSingleResult()
+                   .intValue();
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
     }
 
     @Override
