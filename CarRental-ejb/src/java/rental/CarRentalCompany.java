@@ -78,10 +78,22 @@ import javax.persistence.OneToMany;
             + "WHERE res.carRenter = :renterName "),
     
     //getBestClients
-    @NamedQuery(name = "getBestClients", query=""),
+    @NamedQuery(name = "getBestClients", query
+            =" "),
     
     //getMostPopularCarTypeIn
-    @NamedQuery(name ="getMostPopularCarTypeInCompanyAndYear", query="")
+    @NamedQuery(name ="getMostPopularCarTypeInCompanyAndYear", query
+            
+            ="SELECT res.carType, COUNT(DISTINCT res.id) AS num  "
+            + "FROM Reservation res "
+            + "WHERE   res.rentalCompany = :companyName "
+                    + "AND ( EXTRACT(YEAR FROM res.startDate)= :year  OR  EXTRACT(YEAR FROM res.endDate)=:year ) "
+            + "GROUP BY   res.carType "
+            + "ORDER BY   num DESC "
+           ),
+    
+    @NamedQuery(name="getTypeOfName", query=
+            "SELECT t FROM CarType t WHERE t.name = :name")
 })
 
 @Entity
