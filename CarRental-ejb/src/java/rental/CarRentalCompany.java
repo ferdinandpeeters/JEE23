@@ -1,5 +1,6 @@
 package rental;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -41,7 +42,7 @@ public class CarRentalCompany {
     }
 
     public CarRentalCompany(String companyName) {
-        this(companyName, null, null);
+        this(companyName, new ArrayList<String>(), new ArrayList<Car>());
     }
 
     public CarRentalCompany(String name, List<String> regions, List<Car> cars) {
