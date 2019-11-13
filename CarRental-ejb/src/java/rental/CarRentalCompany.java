@@ -36,8 +36,8 @@ import javax.persistence.OneToMany;
     //getCheapestCarType
     @NamedQuery(name ="getCheapestCarBetweenDatesInRegion", query
             = "SELECT DISTINCT car.type.name "
-            + "FROM Car car "
-            + "WHERE car.id NOT IN "
+            + "FROM CarRentalCompany crc, IN (crc.cars) car, IN (crc.regions) region "
+            + "WHERE region = :region AND car.id NOT IN "
             + "("
             + "SELECT res.carId FROM Reservation res "
             + "WHERE res.startDate <= :endDate AND res.endDate <= :startDate"

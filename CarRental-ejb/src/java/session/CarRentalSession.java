@@ -74,7 +74,8 @@ public class CarRentalSession implements CarRentalSessionRemote {
     public String getCheapestCarType(Date start, Date end, String region) throws ReservationException {
         try {
             return entityManager.
-                createNamedQuery("getAvailableCarTypes", String.class)
+                createNamedQuery("getCheapestCarBetweenDatesInRegion", String.class)
+                .setParameter("region", end)
                 .setParameter("startDate", start)
                 .setParameter("endDate", end)
                 .setMaxResults(1).getSingleResult();
