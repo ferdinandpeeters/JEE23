@@ -31,8 +31,19 @@ import javax.persistence.OneToMany;
             + "("
             + "SELECT res.carId FROM Reservation res "
             + "WHERE res.startDate <= :endDate AND res.endDate <= :startDate"
-            + ")")
-    ,
+            + ")"),
+    
+    //getCheapestCarType
+    @NamedQuery(name ="getCheapestCarBetweenDatesInRegion", query
+            = "SELECT DISTINCT car.type.name "
+            + "FROM Car car "
+            + "WHERE car.id NOT IN "
+            + "("
+            + "SELECT res.carId FROM Reservation res "
+            + "WHERE res.startDate <= :endDate AND res.endDate <= :startDate"
+            + ") "
+            + "ORDER BY car.type.rentalPricePerDay ASC"),
+    
     
     //ManagerSession Queries
     @NamedQuery(name = "getCarTypesOfCompany", query
@@ -57,7 +68,16 @@ import javax.persistence.OneToMany;
     @NamedQuery(name = "getNumberOfReservationsGivenCarTypeInCompany", query
             = "SELECT COUNT (car.reservations) "
             + "FROM CarRentalCompany crc, IN (crc.cars) car "
-            + "WHERE crc.name = :crcName AND car.type.name = :typeName") //ok
+            + "WHERE crc.name = :crcName AND car.type.name = :typeName"), //ok
+        
+    //getNumberOfReservationsBy
+    @NamedQuery(name = "getNumberOfReservationsByRenter", query=""),
+    
+    //getBestClients
+    @NamedQuery(name = "getBestClients", query=""),
+    
+    //getMostPopularCarTypeIn
+    @NamedQuery(name ="getMostPopularCarTypeInCompanyAndYear", query="")
 })
 
 @Entity
