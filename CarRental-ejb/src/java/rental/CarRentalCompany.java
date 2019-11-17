@@ -32,10 +32,11 @@ import javax.persistence.OneToMany;
             + "("
             + "SELECT res.carId FROM Reservation res "
             + "WHERE res.startDate <= :endDate AND res.endDate <= :startDate"
-            + ")"),
+            + ")")
+    ,
     
     //getCheapestCarType
-    @NamedQuery(name ="getCheapestCarBetweenDatesInRegion", query
+    @NamedQuery(name = "getCheapestCarBetweenDatesInRegion", query
             = "SELECT DISTINCT car.type.name "
             + "FROM CarRentalCompany crc, IN (crc.cars) car, IN (crc.regions) region "
             + "WHERE region = :region AND car.id NOT IN "
@@ -43,7 +44,8 @@ import javax.persistence.OneToMany;
             + "SELECT res.carId FROM Reservation res "
             + "WHERE res.startDate <= :endDate AND res.endDate <= :startDate"
             + ") "
-            + "ORDER BY car.type.rentalPricePerDay ASC"),
+            + "ORDER BY car.type.rentalPricePerDay ASC")
+    ,
 
     
     //ManagerSession Queries
@@ -70,33 +72,38 @@ import javax.persistence.OneToMany;
     @NamedQuery(name = "getNumberOfReservationsGivenCarTypeInCompany", query
             = "SELECT COUNT (car.reservations) "
             + "FROM CarRentalCompany crc, IN (crc.cars) car "
-            + "WHERE crc.name = :crcName AND car.type.name = :typeName"), // (e) ok
+            + "WHERE crc.name = :crcName AND car.type.name = :typeName")
+    , // (e) ok
         
     //getNumberOfReservationsBy
     @NamedQuery(name = "getNumberOfReservationsByRenter", query
-            ="SELECT COUNT(DISTINCT res.id ) "
+            = "SELECT COUNT(DISTINCT res.id ) "
             + "FROM Reservation res "
-            + "WHERE res.carRenter = :renterName "),
+            + "WHERE res.carRenter = :renterName ")
+    ,
     
     //getBestClients
-    @NamedQuery(name = "getBestClients", query=
-            "SELECT COUNT (DISTINCT res.id) "
-                    + "FROM Reservation res "
-                    + "GROUP BY res.carRenter"),
+    @NamedQuery(name = "getBestClients", query
+            = "SELECT MAX(c.amt) "
+            + "FROM ( "
+            + "SELECT COUNT (DISTINCT res.id) AS amt "
+            + "FROM Reservation res "
+            + "GROUP BY res.carRenter) c")
+    ,
     
     //getMostPopularCarTypeIn
-    @NamedQuery(name ="getMostPopularCarTypeInCompanyAndYear", query
-            
-            ="SELECT res.carType, COUNT(DISTINCT res.id) AS num  "
+    @NamedQuery(name = "getMostPopularCarTypeInCompanyAndYear", query
+            = "SELECT res.carType, COUNT(DISTINCT res.id) AS num  "
             + "FROM Reservation res "
             + "WHERE   res.rentalCompany = :companyName "
-                    + "AND ( EXTRACT(YEAR FROM res.startDate)= :year  OR  EXTRACT(YEAR FROM res.endDate)=:year ) "
+            + "AND ( EXTRACT(YEAR FROM res.startDate)= :year  OR  EXTRACT(YEAR FROM res.endDate)=:year ) "
             + "GROUP BY   res.carType "
             + "ORDER BY   num DESC "
-           ),
+    )
+    ,
     
-    @NamedQuery(name="getTypeOfName", query=
-            "SELECT t FROM CarType t WHERE t.name = :name")
+    @NamedQuery(name = "getTypeOfName", query
+            = "SELECT t FROM CarType t WHERE t.name = :name")
 })
 
 @Entity
