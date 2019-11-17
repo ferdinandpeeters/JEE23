@@ -30,7 +30,7 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
         loadData("dockx.csv", managerSession);
         loadData("hertz.csv", managerSession);
 
-        /* CarRentalSessionRemote carRentalSession = main.getNewReservationSession("Steben");
+        CarRentalSessionRemote carRentalSession = main.getNewReservationSession("Steben");
         carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "Economy", "Brussels"));
         carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "MPV", "Brussels"));
         List<Reservation> l = carRentalSession.confirmQuotes();
@@ -43,12 +43,13 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
         carRentalSession3.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "Premium", "Brussels"));
         List<Reservation> l3 = carRentalSession2.confirmQuotes();
 
+        System.out.println(l.size() + " " + l2.size() + " " + l3.size());
         System.out.println(managerSession.getBestClients());
 
         
         
         //TODO, werkt niet (?) => System.out.println("\n\n getCarIds " + managerSession.getCarIds("Hertz", "Economy"));
-         */
+         
         // main.run();
     }
 

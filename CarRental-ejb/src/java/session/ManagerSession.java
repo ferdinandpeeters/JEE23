@@ -104,7 +104,7 @@ public class ManagerSession implements ManagerSessionRemote {
         }
     }
 
-    public int getNumberOfReservationsBy(String clientName) {
+    public int getNumberOfReservationsByRenter(String clientName) {
         try {
              return entityManager.createNamedQuery(
                    "getNumberOfReservationsByRenter", Long.class)
@@ -144,5 +144,6 @@ public class ManagerSession implements ManagerSessionRemote {
             return null;
         }
     }
+
 
 }
