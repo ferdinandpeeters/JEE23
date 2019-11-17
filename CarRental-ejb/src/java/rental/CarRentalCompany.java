@@ -46,7 +46,7 @@ import javax.persistence.OneToMany;
             + "SELECT res.carId FROM Reservation res "
             + "WHERE res.startDate <= :endDate AND res.endDate <= :startDate"
             + ") "
-            + "ORDER BY car.type.rentalPricePerDay ASC")
+            + "ORDER BY car.type.rentalPricePerDay ASC") //(i) ok
     ,
 
     
@@ -61,8 +61,8 @@ import javax.persistence.OneToMany;
     //session function created but not needed in client overrides
     @NamedQuery(name = "getCarIdsOfGivenTypeAndCompany", query
             = "SELECT DISTINCT car.id "
-            + "FROM CarRentalCompany crc, IN (crc.cars) car, IN (crc.carTypes) t " //(c) not ok?
-            + "WHERE crc.name = :companyName AND t.name = :typeName")
+            + "FROM CarRentalCompany crc, IN (crc.cars) car " 
+            + "WHERE crc.name = :companyName AND car.type.name = :typeName") //(c) ok
     ,
     
     @NamedQuery(name = "getNumberOfReservationsGivenCarId", query
@@ -74,8 +74,8 @@ import javax.persistence.OneToMany;
     @NamedQuery(name = "getNumberOfReservationsGivenCarTypeInCompany", query
             = "SELECT COUNT (car.reservations) "
             + "FROM CarRentalCompany crc, IN (crc.cars) car "
-            + "WHERE crc.name = :crcName AND car.type.name = :typeName")
-    , // (e) ok
+            + "WHERE crc.name = :crcName AND car.type.name = :typeName")// (e) ok
+    , 
         
     //getNumberOfReservationsBy
     @NamedQuery(name = "getNumberOfReservationsByRenter", query
@@ -93,7 +93,7 @@ import javax.persistence.OneToMany;
             + "WHERE   res.rentalCompany = :companyName "
             + "AND ( EXTRACT(YEAR FROM res.startDate)= :year  OR  EXTRACT(YEAR FROM res.endDate)=:year ) "
             + "GROUP BY   res.carType "
-            + "ORDER BY   num DESC "
+            + "ORDER BY   num DESC " //(h) ok
     )
     ,
     

@@ -31,25 +31,21 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
         loadData("hertz.csv", managerSession);
 
         CarRentalSessionRemote carRentalSession = main.getNewReservationSession("Steben");
-        carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "Economy", "Brussels"));
-        carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "MPV", "Brussels"));
+       /* carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "Economy", "Brussels"));
+        carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "MPV", "Brussels"));
         List<Reservation> l = carRentalSession.confirmQuotes();
 
         CarRentalSessionRemote carRentalSession2 = main.getNewReservationSession("Dries");
-        carRentalSession2.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "Mini", "Brussels"));
+        carRentalSession2.createQuote("Hertz", new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "Mini", "Brussels"));
         List<Reservation> l2 = carRentalSession2.confirmQuotes();
         
         CarRentalSessionRemote carRentalSession3 = main.getNewReservationSession("Driesjex3");
-        carRentalSession3.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "Premium", "Brussels"));
-        List<Reservation> l3 = carRentalSession2.confirmQuotes();
+        carRentalSession3.createQuote("Hertz", new ReservationConstraints(new Date(100, 10, 1), new Date(100, 11, 1), "Mini", "Brussels"));
+        List<Reservation> l3 = carRentalSession3.confirmQuotes();*/
 
-        System.out.println(l.size() + " " + l2.size() + " " + l3.size());
-        System.out.println(managerSession.getBestClients());
 
         
-        
-        //TODO, werkt niet (?) => System.out.println("\n\n getCarIds " + managerSession.getCarIds("Hertz", "Economy"));
-         
+                
         // main.run();
     }
 
