@@ -22,12 +22,13 @@ public class CarRentalSession implements CarRentalSessionRemote {
     private EntityManager entityManager;
 
     private String renter;
+
     private List<Quote> quotes = new LinkedList<Quote>();
 
     @Override
     public Set<String> getAllRentalCompanies() { //(a)
         return new HashSet<>(
-                entityManager.createNamedQuery("getAllCompanies").
+                entityManager.createNamedQuery("getAllCompanyNames").
                         getResultList());
     }
 
@@ -41,15 +42,20 @@ public class CarRentalSession implements CarRentalSessionRemote {
     }
 
     @Override
-    public Quote createQuote(String company, ReservationConstraints constraints) throws ReservationException {
+    public Quote createQuote(ReservationConstraints constraints) throws ReservationException {
         try {
-            CarRentalCompany crc = entityManager.find(CarRentalCompany.class, company);
-            System.out.println("@@@@@@@@@@@@@@@@@@@é " + company);
-            System.out.println("@@@@@@@@@@@@@@@@@@@é " + constraints);
-            Quote q = crc.createQuote(constraints, getRenterName());
-            getQuotes().add(q);
-            return q;
+            List<CarRentalCompany> crcs = entityManager.createNamedQuery("getAllCompanies").getResultList();
 
+            for (CarRentalCompany crc : crcs) {
+                if (crc.containsType(constraints.getCarType())
+                        && crc.isAvailable(constraints.getCarType(), constraints.getStartDate(), constraints.getEndDate())) {
+
+                    Quote q = crc.createQuote(constraints, getRenterName());
+                    getQuotes().add(q);
+                    return q;
+                }
+            }
+            throw new ReservationException("No quote created!");
         } catch (Exception e) {
             throw new ReservationException(e);
         }
@@ -76,11 +82,11 @@ public class CarRentalSession implements CarRentalSessionRemote {
     public String getCheapestCarType(Date start, Date end, String region) throws ReservationException { //(i)
         try {
             return entityManager.
-                createNamedQuery("getCheapestCarBetweenDatesInRegion", String.class)
-                .setParameter("region", region)
-                .setParameter("startDate", start)
-                .setParameter("endDate", end)
-                .setMaxResults(1).getSingleResult();
+                    createNamedQuery("getCheapestCarBetweenDatesInRegion", String.class)
+                    .setParameter("region", region)
+                    .setParameter("startDate", start)
+                    .setParameter("endDate", end)
+                    .setMaxResults(1).getSingleResult();
         } catch (Exception e) {
             throw new ReservationException(e);
         }

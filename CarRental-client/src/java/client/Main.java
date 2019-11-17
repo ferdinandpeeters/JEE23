@@ -86,8 +86,8 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
     }
 
     @Override
-    protected void createQuote(CarRentalSessionRemote session, String name, Date start, Date end, String carType, String region) throws Exception {
-        session.createQuote(region, new ReservationConstraints(start, end, carType, region));
+    protected void createQuote(CarRentalSessionRemote session, String clientName, Date start, Date end, String carType, String region) throws Exception {
+        session.createQuote(new ReservationConstraints(start, end, carType, region));
     }
 
     @Override

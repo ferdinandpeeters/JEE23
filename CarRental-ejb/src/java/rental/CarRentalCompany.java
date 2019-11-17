@@ -23,8 +23,12 @@ import javax.persistence.OneToMany;
 
 @NamedQueries({
     //CarRentalSession Queries
-    @NamedQuery(name = "getAllCompanies", query
+    @NamedQuery(name = "getAllCompanyNames", query
             = "SELECT crc.name FROM CarRentalCompany crc") //(a) OK
+    ,
+    
+     @NamedQuery(name = "getAllCompanies", query
+            = "SELECT crc FROM CarRentalCompany crc")
     ,
     
     
@@ -130,10 +134,10 @@ public class CarRentalCompany {
     @Id
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Car> cars;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private Set<CarType> carTypes = new HashSet<CarType>();
 
     @ElementCollection
@@ -194,6 +198,8 @@ public class CarRentalCompany {
     }
 
     public CarType getType(String carTypeName) {
+        System.out.println("ALL TYPES!! = " + carTypes);
+        System.out.println("CHECKED !!  = " +carTypeName);
         for (CarType type : carTypes) {
             if (type.getName().equals(carTypeName)) {
                 return type;
@@ -203,7 +209,7 @@ public class CarRentalCompany {
     }
 
     public boolean isAvailable(String carTypeName, Date start, Date end) {
-        logger.log(Level.INFO, "<{0}> Checking availability for car type {1}", new Object[]{name, carTypeName});
+        logger.log(Level.INFO, "<{0}> Checking availability for car type {1} on " + getName(), new Object[]{name, carTypeName});
         return getAvailableCarTypes(start, end).contains(getType(carTypeName));
     }
 
@@ -215,6 +221,15 @@ public class CarRentalCompany {
             }
         }
         return availableCarTypes;
+    }
+    
+    public boolean containsType(String typeName){
+        for (CarType type : carTypes) {
+            if (type.getName().equals(typeName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
