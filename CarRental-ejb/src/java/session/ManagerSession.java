@@ -59,7 +59,7 @@ public class ManagerSession implements ManagerSessionRemote {
     }
 
     @Override
-    public Set<Integer> getCarIds(String company, String type) { //(c)
+    public Set<Integer> getCarIds(String company, String type) { //(c) ok
         try {
             return new HashSet<>(
                     entityManager.createNamedQuery(
@@ -106,11 +106,11 @@ public class ManagerSession implements ManagerSessionRemote {
 
     public int getNumberOfReservationsByRenter(String clientName) {
         try {
-             return entityManager.createNamedQuery(
-                   "getNumberOfReservationsByRenter", Long.class)
-                   .setParameter("renterName", clientName)
-                   .getSingleResult()
-                   .intValue();
+            return entityManager.createNamedQuery(
+                    "getNumberOfReservationsByRenter", Long.class)
+                    .setParameter("renterName", clientName)
+                    .getSingleResult()
+                    .intValue();
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
@@ -120,8 +120,9 @@ public class ManagerSession implements ManagerSessionRemote {
     @Override
     public Set<String> getBestClients() { //(g)
         try {
-            System.out.println(new HashSet<>(entityManager.createNamedQuery(
-                    "getBestClients", String.class).getResultList())); // TODO
+            System.out.println(entityManager.createNamedQuery(
+                    "getBestClients", String.class).getResultList());
+            // System.out.println(new HashSet<>()); // TODO
             return null;
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,20 +131,19 @@ public class ManagerSession implements ManagerSessionRemote {
     }
 
     @Override
-    public CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year) { //(h)
+    public CarType getMostPopularCarTypeIn(String carRentalCompanyName, int year) { //(h) ok
         try {
-             List<Object[]> result= entityManager.createNamedQuery(
-                   "getMostPopularCarTypeInCompanyAndYear")
-                   .setParameter("companyName", carRentalCompanyName)
-                   .setParameter("year", year)
-                   .setMaxResults(1).getResultList();
-             String type = (String) result.get(0)[0];
-             return entityManager.createNamedQuery("getTypeOfName", CarType.class).setParameter("name", type).getResultList().get(0);
+            List<Object[]> result = entityManager.createNamedQuery(
+                    "getMostPopularCarTypeInCompanyAndYear")
+                    .setParameter("companyName", carRentalCompanyName)
+                    .setParameter("year", year)
+                    .setMaxResults(1).getResultList();
+            String type = (String) result.get(0)[0];
+            return entityManager.createNamedQuery("getTypeOfName", CarType.class).setParameter("name", type).getResultList().get(0);
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
-
 
 }
