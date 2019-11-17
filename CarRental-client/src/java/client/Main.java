@@ -30,8 +30,8 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
         loadData("dockx.csv", managerSession);
         loadData("hertz.csv", managerSession);
 
-        CarRentalSessionRemote carRentalSession = main.getNewReservationSession("Steben");
-       /* carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "Economy", "Brussels"));
+       /* CarRentalSessionRemote carRentalSession = main.getNewReservationSession("StevenISNUMMER_1_JWZ");
+        carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "Economy", "Brussels"));
         carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "MPV", "Brussels"));
         List<Reservation> l = carRentalSession.confirmQuotes();
 
@@ -41,12 +41,11 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
         
         CarRentalSessionRemote carRentalSession3 = main.getNewReservationSession("Driesjex3");
         carRentalSession3.createQuote("Hertz", new ReservationConstraints(new Date(100, 10, 1), new Date(100, 11, 1), "Mini", "Brussels"));
-        List<Reservation> l3 = carRentalSession3.confirmQuotes();*/
+        List<Reservation> l3 = carRentalSession3.confirmQuotes();
 
-
-        
+        System.out.println(managerSession.getBestClients());*/
                 
-        // main.run();
+        main.run();
     }
 
     //Session methods

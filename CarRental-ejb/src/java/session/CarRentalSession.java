@@ -44,6 +44,8 @@ public class CarRentalSession implements CarRentalSessionRemote {
     public Quote createQuote(String company, ReservationConstraints constraints) throws ReservationException {
         try {
             CarRentalCompany crc = entityManager.find(CarRentalCompany.class, company);
+            System.out.println("@@@@@@@@@@@@@@@@@@@é " + company);
+            System.out.println("@@@@@@@@@@@@@@@@@@@é " + constraints);
             Quote q = crc.createQuote(constraints, getRenterName());
             getQuotes().add(q);
             return q;
