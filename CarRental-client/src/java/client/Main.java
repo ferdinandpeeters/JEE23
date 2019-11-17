@@ -36,7 +36,7 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
         List<Reservation> l = carRentalSession.confirmQuotes();
 
         CarRentalSessionRemote carRentalSession2 = main.getNewReservationSession("Dries");
-        carRentalSession2.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "Special", "Brussels"));
+        carRentalSession2.createQuote("Hertz", new ReservationConstraints(new Date(2000, 1, 1), new Date(2001, 1, 1), "Mini", "Brussels"));
         List<Reservation> l2 = carRentalSession2.confirmQuotes();
         
         CarRentalSessionRemote carRentalSession3 = main.getNewReservationSession("Driesjex3");
