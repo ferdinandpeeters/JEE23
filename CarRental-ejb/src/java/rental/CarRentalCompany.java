@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -82,14 +84,7 @@ import javax.persistence.OneToMany;
             + "WHERE res.carRenter = :renterName ")
     ,
     
-    //getBestClients
-    @NamedQuery(name = "getBestClients", query
-            = "SELECT MAX(c.amt) "
-            + "FROM ( "
-            + "SELECT COUNT (DISTINCT res.id) AS amt "
-            + "FROM Reservation res "
-            + "GROUP BY res.carRenter) c")
-    ,
+    
     
     //getMostPopularCarTypeIn
     @NamedQuery(name = "getMostPopularCarTypeInCompanyAndYear", query
@@ -105,6 +100,28 @@ import javax.persistence.OneToMany;
     @NamedQuery(name = "getTypeOfName", query
             = "SELECT t FROM CarType t WHERE t.name = :name")
 })
+
+@NamedNativeQueries({
+//getBestClients
+    @NamedNativeQuery(name = "getBestClients", query
+            = "SELECT m.renter  \n" +
+"FROM ( \n" +
+"    SELECT r.carRenter AS renter, COUNT(DISTINCT r.id) AS amt \n" +
+"    FROM Reservation r \n" +
+"    GROUP BY r.carRenter \n" +
+"    ) as m  \n" +
+"WHERE m.amt = \n" +
+"    ( SELECT max(c.amt) \n" +
+"    FROM ( \n" +
+"        SELECT COUNT(DISTINCT res.id) AS amt  \n" +
+"        FROM Reservation res \n" +
+"        GROUP BY res.carRenter\n" +
+"        ) as c\n" +
+"    )")
+
+
+})
+
 
 @Entity
 public class CarRentalCompany {

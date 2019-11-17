@@ -120,8 +120,11 @@ public class ManagerSession implements ManagerSessionRemote {
     @Override
     public Set<String> getBestClients() { //(g)
         try {
-            System.out.println(new HashSet<>(entityManager.createNamedQuery(
+            System.err.println("bestclients");
+            System.err.println(new HashSet<>(entityManager.createNamedQuery(
                     "getBestClients", String.class).getResultList())); // TODO
+            System.err.println("End bestclient");
+           
             return null;
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
