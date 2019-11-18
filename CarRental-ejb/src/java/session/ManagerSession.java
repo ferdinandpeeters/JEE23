@@ -12,6 +12,7 @@ import rental.Car;
 import rental.CarRentalCompany;
 import rental.CarType;
 import rental.Reservation;
+import rental.ReservationException;
 
 @Stateless
 public class ManagerSession implements ManagerSessionRemote {
@@ -136,9 +137,13 @@ public class ManagerSession implements ManagerSessionRemote {
                     .setParameter("companyName", carRentalCompanyName)
                     .setParameter("year", year)
                     .setMaxResults(1).getResultList();
+
+            if (result == null || result.get(0) == null || result.get(0)[0] == null) {
+                throw new ReservationException("No results found for " + carRentalCompanyName + " " + year);
+            }
             String type = (String) result.get(0)[0];
             return entityManager.createNamedQuery("getTypeOfName", CarType.class).setParameter("name", type).getResultList().get(0);
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException | ReservationException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }

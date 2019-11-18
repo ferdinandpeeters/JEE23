@@ -9,8 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import rental.CarType;
 import rental.Reservation;
@@ -30,21 +28,20 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
         loadData("dockx.csv", managerSession);
         loadData("hertz.csv", managerSession);
 
-       /* CarRentalSessionRemote carRentalSession = main.getNewReservationSession("StevenISNUMMER_1_JWZ");
-        carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "Economy", "Brussels"));
-        carRentalSession.createQuote("Hertz", new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "MPV", "Brussels"));
+        /*CarRentalSessionRemote carRentalSession = main.getNewReservationSession("Steven");
+        carRentalSession.createQuote(new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "Economy", "Brussels"));
+        carRentalSession.createQuote(new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "MPV", "Brussels"));
         List<Reservation> l = carRentalSession.confirmQuotes();
 
         CarRentalSessionRemote carRentalSession2 = main.getNewReservationSession("Dries");
-        carRentalSession2.createQuote("Hertz", new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "Mini", "Brussels"));
+        carRentalSession2.createQuote(new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "Mini", "Brussels"));
         List<Reservation> l2 = carRentalSession2.confirmQuotes();
-        
+
         CarRentalSessionRemote carRentalSession3 = main.getNewReservationSession("Driesjex3");
-        carRentalSession3.createQuote("Hertz", new ReservationConstraints(new Date(100, 10, 1), new Date(100, 11, 1), "Mini", "Brussels"));
+        carRentalSession3.createQuote(new ReservationConstraints(new Date(100, 10, 1), new Date(100, 11, 1), "Mini", "Brussels"));
         List<Reservation> l3 = carRentalSession3.confirmQuotes();
 
         System.out.println(managerSession.getBestClients());*/
-                
         main.run();
     }
 
@@ -81,7 +78,7 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
     protected void getAvailableCarTypes(CarRentalSessionRemote session, Date start, Date end) throws Exception {
         System.out.println("CLIENT getAvailableCarTypes");
         for (CarType ct : session.getAvailableCarTypes(start, end)) {
-            System.out.println(ct);
+            //System.out.println(ct);
         }
     }
 
