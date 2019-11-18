@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import rental.CarRentalCompany;
@@ -62,6 +64,7 @@ public class CarRentalSession implements CarRentalSessionRemote {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Reservation> confirmQuotes() throws ReservationException {
         List<Reservation> done = new LinkedList<>();
         System.out.println("Server confirming quotes...");
@@ -72,7 +75,6 @@ public class CarRentalSession implements CarRentalSessionRemote {
                 System.out.println("Server quote confirmed!");
             }
         } catch (Exception e) {
-            //TODO transaction
             throw new ReservationException(e);
         }
         return done;
