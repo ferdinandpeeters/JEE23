@@ -26,11 +26,11 @@ public class CarRentalSession implements CarRentalSessionRemote {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private String renter;
-    private List<Quote> quotes = new LinkedList<>();
-
     @Resource
     private EJBContext ejbContext;
+
+    private String renter;
+    private List<Quote> quotes = new LinkedList<>();
 
     @Override
     public Set<String> getAllRentalCompanies() { //(a) ok
@@ -111,7 +111,7 @@ public class CarRentalSession implements CarRentalSessionRemote {
     public String getRenterName() {
         return renter;
     }
-    
+
     @Override
     public List<Quote> getQuotes() {
         return quotes;
