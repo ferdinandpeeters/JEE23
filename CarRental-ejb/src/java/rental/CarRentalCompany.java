@@ -70,7 +70,7 @@ import javax.persistence.OneToMany;
     ,
     
     @NamedQuery(name = "getNumberOfReservationsGivenCarId", query
-            = "SELECT COUNT(DISTINCT r.id ) "
+            = "SELECT COUNT (DISTINCT r.id) "
             + "FROM Reservation r "
             + "WHERE r.carId = :carId") //(d) ok
     ,
@@ -83,9 +83,9 @@ import javax.persistence.OneToMany;
         
     //getNumberOfReservationsBy
     @NamedQuery(name = "getNumberOfReservationsByRenter", query
-            = "SELECT COUNT(DISTINCT res.id ) "
+            = "SELECT COUNT (DISTINCT res.id) "
             + "FROM Reservation res "
-            + "WHERE res.carRenter = :renterName ")
+            + "WHERE res.carRenter = :renterName ") //(f) 
     ,
     
     

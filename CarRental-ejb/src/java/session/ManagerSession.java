@@ -136,6 +136,8 @@ public class ManagerSession implements ManagerSessionRemote {
                     .setParameter("companyName", carRentalCompanyName)
                     .setParameter("year", year)
                     .setMaxResults(1).getResultList();
+            
+            //TODO: nullcheck
             String type = (String) result.get(0)[0];
             return entityManager.createNamedQuery("getTypeOfName", CarType.class).setParameter("name", type).getResultList().get(0);
         } catch (IllegalArgumentException ex) {
