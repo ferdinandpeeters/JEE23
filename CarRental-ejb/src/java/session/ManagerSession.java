@@ -105,6 +105,7 @@ public class ManagerSession implements ManagerSessionRemote {
         }
     }
 
+    @Override
     public int getNumberOfReservationsByRenter(String clientName) {
         try {
             return entityManager.createNamedQuery(

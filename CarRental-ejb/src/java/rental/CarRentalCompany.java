@@ -35,7 +35,7 @@ import javax.persistence.OneToMany;
             + "WHERE car.id NOT IN "
             + "("
             + "SELECT res.carId FROM Reservation res "
-            + "WHERE res.startDate <= :endDate AND res.endDate <= :startDate"
+            + "WHERE res.startDate <= :endDate AND res.endDate >= :startDate"
             + ")")
     ,
     
@@ -45,7 +45,7 @@ import javax.persistence.OneToMany;
             + "WHERE region = :region AND car.id NOT IN "
             + "("
             + "SELECT res.carId FROM Reservation res "
-            + "WHERE res.startDate <= :endDate AND res.endDate <= :startDate"
+            + "WHERE res.startDate <= :endDate AND res.endDate >= :startDate"
             + ") "
             + "ORDER BY car.type.rentalPricePerDay ASC") //(i) ok
     ,
