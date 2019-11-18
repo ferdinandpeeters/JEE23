@@ -22,15 +22,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 @NamedQueries({
-    //CarRentalSession Queries
     @NamedQuery(name = "getAllCompanyNames", query
             = "SELECT crc.name FROM CarRentalCompany crc") //(a) OK
     ,
     
      @NamedQuery(name = "getAllCompanies", query
             = "SELECT crc FROM CarRentalCompany crc")
-    ,
-    
+    , 
     
     @NamedQuery(name = "getAvailableCarTypes", query
             = "SELECT DISTINCT car.type FROM Car car "
@@ -41,7 +39,6 @@ import javax.persistence.OneToMany;
             + ")")
     ,
     
-    //getCheapestCarType
     @NamedQuery(name = "getCheapestCarBetweenDatesInRegion", query
             = "SELECT DISTINCT car.type.name "
             + "FROM CarRentalCompany crc, IN (crc.cars) car, IN (crc.regions) region "
@@ -53,16 +50,12 @@ import javax.persistence.OneToMany;
             + "ORDER BY car.type.rentalPricePerDay ASC") //(i) ok
     ,
 
-    
-    //ManagerSession Queries
     @NamedQuery(name = "getCarTypesOfCompany", query
             = "SELECT DISTINCT crc.carTypes "
             + "FROM CarRentalCompany crc "
             + "WHERE crc.name = :name") //(b) OK
     ,
     
-    //asked in assignment
-    //session function created but not needed in client overrides
     @NamedQuery(name = "getCarIdsOfGivenTypeAndCompany", query
             = "SELECT DISTINCT car.id "
             + "FROM CarRentalCompany crc, IN (crc.cars) car "
@@ -81,16 +74,12 @@ import javax.persistence.OneToMany;
             + "WHERE crc.name = :crcName AND car.type.name = :typeName")// (e) ok
     , 
         
-    //getNumberOfReservationsBy
     @NamedQuery(name = "getNumberOfReservationsByRenter", query
             = "SELECT COUNT (DISTINCT res.id) "
             + "FROM Reservation res "
-            + "WHERE res.carRenter = :renterName ") //(f) 
+            + "WHERE res.carRenter = :renterName ") //(f) ok
     ,
     
-    
-    
-    //getMostPopularCarTypeIn
     @NamedQuery(name = "getMostPopularCarTypeInCompanyAndYear", query
             = "SELECT res.carType, COUNT(DISTINCT res.id) AS num  "
             + "FROM Reservation res "
@@ -108,22 +97,21 @@ import javax.persistence.OneToMany;
 //We used a Native query since a NamedQuery only accepts statements in the FROM clause. 
 //We needed a subquery in the FROM clause.
 @NamedNativeQueries({
-    //getBestClients
     @NamedNativeQuery(name = "getBestClients", query
-            = "SELECT m.renter  \n"
-            + "FROM ( \n"
-            + "    SELECT r.carRenter AS renter, COUNT(DISTINCT r.id) AS amt \n"
-            + "    FROM Reservation r \n"
-            + "    GROUP BY r.carRenter \n"
-            + "    ) as m  \n"
-            + "WHERE m.amt = \n"
-            + "    ( SELECT max(c.amt) \n"
-            + "    FROM ( \n"
-            + "        SELECT COUNT(DISTINCT res.id) AS amt  \n"
-            + "        FROM Reservation res \n"
-            + "        GROUP BY res.carRenter\n"
-            + "        ) as c\n"
-            + "    )") //(g) ok
+            = "SELECT m.renter  "
+            + "FROM ( "
+            + "    SELECT r.carRenter AS renter, COUNT(DISTINCT r.id) AS amt "
+            + "    FROM Reservation r "
+            + "    GROUP BY r.carRenter "
+            + "    ) as m  "
+            + "WHERE m.amt = "
+            + "    ( SELECT max(c.amt) "
+            + "    FROM ( "
+            + "        SELECT COUNT(DISTINCT res.id) AS amt  "
+            + "        FROM Reservation res "
+            + "        GROUP BY res.carRenter "
+            + "        ) as c"      //(g) ok
+            + "    )") 
 })
 
 @Entity
@@ -199,7 +187,7 @@ public class CarRentalCompany {
 
     public CarType getType(String carTypeName) {
         System.out.println("ALL TYPES!! = " + carTypes);
-        System.out.println("CHECKED !!  = " +carTypeName);
+        System.out.println("CHECKED !!  = " + carTypeName);
         for (CarType type : carTypes) {
             if (type.getName().equals(carTypeName)) {
                 return type;
@@ -222,8 +210,8 @@ public class CarRentalCompany {
         }
         return availableCarTypes;
     }
-    
-    public boolean containsType(String typeName){
+
+    public boolean containsType(String typeName) {
         for (CarType type : carTypes) {
             if (type.getName().equals(typeName)) {
                 return true;
