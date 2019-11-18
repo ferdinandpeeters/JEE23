@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import javax.annotation.Resource;
+import javax.ejb.EJBContext;
+import javax.ejb.EJBException;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -26,6 +29,9 @@ public class CarRentalSession implements CarRentalSessionRemote {
     private String renter;
 
     private List<Quote> quotes = new LinkedList<Quote>();
+
+    @Resource
+    private EJBContext ejbContext;
 
     @Override
     public Set<String> getAllRentalCompanies() { //(a)
@@ -67,7 +73,6 @@ public class CarRentalSession implements CarRentalSessionRemote {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Reservation> confirmQuotes() throws ReservationException {
         List<Reservation> done = new LinkedList<>();
-        System.out.println("Server confirming quotes...");
         try {
             for (Quote quote : quotes) {
                 CarRentalCompany crc = entityManager.find(CarRentalCompany.class, quote.getRentalCompany());
@@ -75,7 +80,8 @@ public class CarRentalSession implements CarRentalSessionRemote {
                 System.out.println("Server quote confirmed!");
             }
         } catch (Exception e) {
-            throw new ReservationException(e);
+            ejbContext.setRollbackOnly();
+            throw new ReservationException(e.getMessage());
         }
         return done;
     }
