@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -24,24 +23,11 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
 
     public static void main(String[] args) throws Exception {
         Main main = new Main("trips");
+
         ManagerSessionRemote managerSession = main.getNewManagerSession("manager");
         loadData("dockx.csv", managerSession);
         loadData("hertz.csv", managerSession);
 
-        /*CarRentalSessionRemote carRentalSession = main.getNewReservationSession("Steven");
-        carRentalSession.createQuote(new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "Economy", "Brussels"));
-        carRentalSession.createQuote(new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "MPV", "Brussels"));
-        List<Reservation> l = carRentalSession.confirmQuotes();
-
-        CarRentalSessionRemote carRentalSession2 = main.getNewReservationSession("Dries");
-        carRentalSession2.createQuote(new ReservationConstraints(new Date(100, 1, 1), new Date(100, 2, 1), "Mini", "Brussels"));
-        List<Reservation> l2 = carRentalSession2.confirmQuotes();
-
-        CarRentalSessionRemote carRentalSession3 = main.getNewReservationSession("Driesjex3");
-        carRentalSession3.createQuote(new ReservationConstraints(new Date(100, 10, 1), new Date(100, 11, 1), "Mini", "Brussels"));
-        List<Reservation> l3 = carRentalSession3.confirmQuotes();
-
-        System.out.println(managerSession.getBestClients());*/
         main.run();
     }
 
@@ -76,9 +62,8 @@ public class Main extends AbstractTestManagement<CarRentalSessionRemote, Manager
 
     @Override
     protected void getAvailableCarTypes(CarRentalSessionRemote session, Date start, Date end) throws Exception {
-        System.out.println("CLIENT getAvailableCarTypes");
         for (CarType ct : session.getAvailableCarTypes(start, end)) {
-            //System.out.println(ct);
+            System.out.println(ct);
         }
     }
 

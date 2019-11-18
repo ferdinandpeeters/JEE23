@@ -9,14 +9,16 @@ import javax.persistence.Id;
 public class Reservation extends Quote {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private int carId;
-    
-    /***************
+
+    /**
+     * *************
      * CONSTRUCTOR *
-     ***************/
-    
+     **************
+     */
     public Reservation() {
     }
 
@@ -25,22 +27,24 @@ public class Reservation extends Quote {
                 quote.getRentalCompany(), quote.getCarType(), quote.getRentalPrice());
         this.carId = carId;
     }
-    
-    /******
+
+    /**
+     * ****
      * ID *
-     ******/
-    
+     *****
+     */
     public int getCarId() {
-    	return carId;
+        return carId;
     }
-    
-    /*************
+
+    /**
+     * ***********
      * TO STRING *
-     *************/
-    
+     ************
+     */
     @Override
     public String toString() {
-        return String.format("Reservation for %s from %s to %s at %s\nCar type: %s\tCar: %s\nTotal price: %.2f", 
+        return String.format("Reservation for %s from %s to %s at %s\nCar type: %s\tCar: %s\nTotal price: %.2f",
                 getCarRenter(), getStartDate(), getEndDate(), getRentalCompany(), getCarType(), getCarId(), getRentalPrice());
-    }	
+    }
 }

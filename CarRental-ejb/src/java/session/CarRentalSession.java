@@ -27,14 +27,13 @@ public class CarRentalSession implements CarRentalSessionRemote {
     private EntityManager entityManager;
 
     private String renter;
-
-    private List<Quote> quotes = new LinkedList<Quote>();
+    private List<Quote> quotes = new LinkedList<>();
 
     @Resource
     private EJBContext ejbContext;
 
     @Override
-    public Set<String> getAllRentalCompanies() { //(a)
+    public Set<String> getAllRentalCompanies() { //(a) ok
         return new HashSet<>(
                 entityManager.createNamedQuery("getAllCompanyNames").
                         getResultList());
@@ -74,7 +73,7 @@ public class CarRentalSession implements CarRentalSessionRemote {
     public List<Reservation> confirmQuotes() throws ReservationException {
         List<Reservation> done = new LinkedList<>();
         try {
-            for (Quote quote : quotes) {
+            for (Quote quote : getQuotes()) {
                 CarRentalCompany crc = entityManager.find(CarRentalCompany.class, quote.getRentalCompany());
                 done.add(crc.confirmQuote(quote));
                 System.out.println("Server quote confirmed!");
@@ -102,11 +101,6 @@ public class CarRentalSession implements CarRentalSessionRemote {
 
     //Getters & Setters
     @Override
-    public List<Quote> getCurrentQuotes() {
-        return quotes;
-    }
-
-    @Override
     public void setRenterName(String name) {
         if (renter != null) {
             throw new IllegalStateException("name already set");
@@ -117,7 +111,8 @@ public class CarRentalSession implements CarRentalSessionRemote {
     public String getRenterName() {
         return renter;
     }
-
+    
+    @Override
     public List<Quote> getQuotes() {
         return quotes;
     }

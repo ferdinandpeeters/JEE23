@@ -5,15 +5,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import rental.Car;
 import rental.CarRentalCompany;
 import rental.CarType;
-import rental.Reservation;
 import rental.ReservationException;
 
+@DeclareRoles("Manager")
+@RolesAllowed("Manager")
 @Stateless
 public class ManagerSession implements ManagerSessionRemote {
 
@@ -46,7 +48,7 @@ public class ManagerSession implements ManagerSessionRemote {
         try {
             System.err.println(" no error");
 
-            return new HashSet<CarType>(
+            return new HashSet<>(
                     entityManager.createNamedQuery(
                             "getCarTypesOfCompany", CarType.class)
                             .setParameter("name", company)

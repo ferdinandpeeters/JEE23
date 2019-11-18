@@ -110,8 +110,8 @@ import javax.persistence.OneToMany;
             + "        SELECT COUNT(DISTINCT res.id) AS amt  "
             + "        FROM Reservation res "
             + "        GROUP BY res.carRenter "
-            + "        ) as c"      //(g) ok
-            + "    )") 
+            + "        ) as c" //(g) ok
+            + "    )")
 })
 
 @Entity
@@ -133,7 +133,7 @@ public class CarRentalCompany {
 
     /**
      * *************
-     * CONSTRUCTORS* ************
+     * CONSTRUCTORS* ***********
      */
     public CarRentalCompany() {
         //no argument constructor used for enty class creation
@@ -155,7 +155,7 @@ public class CarRentalCompany {
 
     /**
      * ******
-     * NAME * *****
+     * NAME * ****
      */
     public String getName() {
         return name;
@@ -167,7 +167,7 @@ public class CarRentalCompany {
 
     /**
      * *********
-     * Regions * *******
+     * Regions * ******
      */
     public void setRegions(List<String> regions) {
         this.regions = regions;
