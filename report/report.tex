@@ -40,22 +40,21 @@ With JEE we don't have to explicitly instantiate, with the "new" keyword, the ob
 
 
 
-	\paragraph{6. How does the Java EE middleware reduce the effort of migrating to another database engine?} \mbox{}\\\\
-
-
-
-
+		\paragraph{6. How does the Java EE middleware reduce the effort of migrating to another database engine?} \mbox{}\\\\
+The entities in the application are persisted in the same manner, and the only change is the location and name of the database. So the only configuration needed to change is inside the persistence unit (persistence.xml). JPA and JDBC automatically generates the relations and the tables of the entities. 
+For the actual migration to another database, the copying of the data from one database to another, is done by the database administrators. They have to set up a migration strategy for retrieving the database from the first database and inserting it into the new database. 
 
  
 
 	\paragraph{7. How does your solution to concurrency prevent race conditions?} \mbox{}\\\\
-
-
+Thread handling is done by EJB container and JSE-level thread handling is discouraged to use by the developer before JEE 7. This means that for example the use of the 'synchronized' keyword, that we used in the RMI lab, is discouraged.
 
 
 
 
 	\paragraph{8. How do transactions compare to synchronization in Java RMI in terms of the scalability of your application?} \mbox{}\\\\
+Within Java RMI we cannot make use of the rollback functions and thus we needed to implement the rollback function
+
 
 
 
