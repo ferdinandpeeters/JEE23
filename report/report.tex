@@ -35,13 +35,13 @@ With JEE we don't have to explicitly instantiate, with the "new" keyword, the ob
 
 
 	\paragraph{5. How does your solution compare with the Java RMI assignment in terms of resilience against server crashes?} \mbox{}\\\\
+Since we store the data in a database, a server crash would only impact the availability of the application. After rebooting and fixing the server, the application will start from the same point as before the crash, since no data would be lost. Only the data of the sessions will be lost because they are impersistent. \mbox{}\\\\
+In the case of a server crash whilst running the server of the RMI assignment, all data will be lost permanently. At no point in time is any data saved on the server, so a crash would basically reset the whole server.
 
 
 
-
-
-		\paragraph{6. How does the Java EE middleware reduce the effort of migrating to another database engine?} \mbox{}\\\\
-The entities in the application are persisted in the same manner, and the only change is the location and name of the database. So the only configuration needed to change is inside the persistence unit (persistence.xml). JPA and JDBC automatically generates the relations and the tables of the entities. 
+		\paragraph{6. How does the Java EE middle ware reduce the effort of migrating to another database engine?} \mbox{}\\\\
+The entities in the application are persisted in the same manner, and the only change is the location and name of the database. So the only configuration needed to change is inside the persistence unit (persistence.xml). JPA and JDBC automatically generates the relations and the tables of the entities.  
 For the actual migration to another database, the copying of the data from one database to another, is done by the database administrators. They have to set up a migration strategy for retrieving the database from the first database and inserting it into the new database. 
 
  
@@ -53,19 +53,16 @@ Thread handling is done by EJB container and JSE-level thread handling is discou
 
 
 	\paragraph{8. How do transactions compare to synchronization in Java RMI in terms of the scalability of your application?} \mbox{}\\\\
-Within Java RMI we cannot make use of the rollback functions and thus we needed to implement the rollback function
+Transactions make sure the required data modifications are either all saved (committed) or rolled back. If any of the statements fail of our transaction, the transaction will roll back and all the statements are undone. Since the EJB container handles the rollback, we do not need to implement the reverse operation. We only need to raise an exception telling the container there went something wrong.\mbox{}\\\\
+Within Java RMI we cannot make use of the rollback functions and thus we needed to implement the rollback functionality ourselves. After we've undone our statements, we raise an exception to the client as expected.
 
 
 
 
 
-
-
-
-
-
-	\paragraph{9. How do you ensure that only users that have specifcally been assigned a manager role can open a ManagerSession and access the manager functionality?} \mbox{}\\\\
-
+	\paragraph{9. How do you ensure that only users that have specifically been assigned a manager role can open a ManagerSession and access the manager functionality?} \mbox{}\\\\
+	TODO getting manager session
+By the use of server side authorization, we check if a user calling the ManagerSession methods has the Manager role. On our GlassFish server, we map certain users in the required Manager group. These users are stored inside a realm, which uses a policy with its own method of authentication and authorization. Our application uses this realm with it's policy, and so the users in the Manager group are able to log in using the default authentication prompt when using the ManagerSession's methods. 
 
 
 
