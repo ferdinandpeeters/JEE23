@@ -16,8 +16,7 @@
 
 	
 	\paragraph{2. Why are client and manager session beans stateful and stateless respectively?} \mbox{}\\\\
-
-Both the manager en client session beans are server-side (EJB) Enterprise Java Bean components. The component is a session bean, because it represents a session with the client.
+Both the manager and client session beans are server-side (EJB) Enterprise Java Bean components. The component is a session bean, because it represents a session with the client.
 The client session is a stateful session bean, this means that it retains state between method invocations. The (conversational) state consists of the values of the instance variables. The client session is stateful because it keeps the conversational state, it contains the name of the renter and the list of quotes.
 The manager session is a stateless session bean, this means that it does not retains the conversational state. In our application there is no need to make the manager session statefull because all instances of the bean are equivalent. This allows the EJB container to assign an instance to any manager.
 
