@@ -61,7 +61,6 @@ Within Java RMI we cannot make use of the rollback functions and thus we needed 
 
 
 	\paragraph{9. How do you ensure that only users that have specifically been assigned a manager role can open a ManagerSession and access the manager functionality?} \mbox{}\\\\
-	TODO getting manager session
 By the use of server side authorization, we check if a user calling the ManagerSession methods has the Manager role. On our GlassFish server, we map certain users in the required Manager group. These users are stored inside a realm, which uses a policy with its own method of authentication and authorization. Our application uses this realm with it's policy, and so the users in the Manager group are able to log in using the default authentication prompt when using the ManagerSession's methods. 
 
 
