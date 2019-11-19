@@ -35,9 +35,9 @@ With JEE we don't have to explicitly instantiate, with the "new" keyword, the ob
 
 
 	\paragraph{5. How does your solution compare with the Java RMI assignment in terms of resilience against server crashes?} \mbox{}\\\\
-Since we store the data in a database, a server crash would only impact the availability of the application. After rebooting and fixing the server, the application will start from the same point as before the crash, since no data would be lost. Only the data of the sessions will be lost because they are impersistent. \mbox{}\\\\
-In the case of a server crash whilst running the server of the RMI assignment, all data will be lost permanently. At no point in time is any data saved on the server, so a crash would basically reset the whole server.
+The resilience against server crashes depends on which component crashes on which server. This is because we are talking about a distributed application. In the Java RMI assignment all the car rental companies store their data in memory. So if a server crashes which contains a car rental company all the data is lost when the server reboots. If the server with contains the Naming Service component crashes and reboots, all the car rental company references are lost, this is because they are stored in memory. If the server with Rental Agency crashes and reboots all the sessions are lost with the client.
 
+The biggest difference with this is assignment is that all the data is stored in a database. So if the server crashes which contains the CarRentalSession and ManagerSession classes all the data will be persistent. Only the data of the sessions will be lost because they are impersistent.
 
 
 		\paragraph{6. How does the Java EE middle ware reduce the effort of migrating to another database engine?} \mbox{}\\\\
