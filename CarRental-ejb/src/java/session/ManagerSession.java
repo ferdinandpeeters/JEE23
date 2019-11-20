@@ -14,6 +14,7 @@ import rental.CarRentalCompany;
 import rental.CarType;
 import rental.ReservationException;
 
+
 @DeclareRoles("Manager")
 @RolesAllowed("Manager")
 @Stateless
