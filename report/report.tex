@@ -42,13 +42,12 @@ For example, retrieving the number of reservations made by a particular car rent
 
 
 	\paragraph{5. How does your solution compare with the Java RMI assignment in terms of resilience against server crashes?} \mbox{}\\\\
-The resilience against server crashes depends on which component crashes on which server. This is because we are talking about a distributed application. In the Java RMI assignment all the car rental companies store their data in memory. So if a server crashes which contains a car rental company all the data is lost when the server reboots. If the server which contains the Naming Service component crashes and reboots, all the car rental company references are lost, this is because they are stored in memory. If the server with Rental Agency crashes and reboots all the sessions are lost with the client.
-
+The resilience against server crashes depends on which component crashes on which server. This is because we are talking about a distributed application. In the Java RMI assignment all the car rental companies store their data in memory. So if a server crashes which contains a car rental company all the data is lost when the server reboots. If the server which contains the Naming Service component crashes and reboots, all the car rental company references are lost, this is because they are stored in memory. If the server with Rental Agency crashes and reboots all the sessions are lost with the client.\\
 The biggest difference with this assignment is that all the data is stored in a database. So if the server crashes which contains the CarRentalSession and ManagerSession classes all the data will not be lost. Only the data of the sessions will be lost because they are not persistent. 
 
 
 		\paragraph{6. How does the Java EE middleware reduce the effort of migrating to another database engine?} \mbox{}\\\\
-The entities in the application are persisted in the same manner, the only change is the location and name of the database. The persistence unit (persistence.xml) stores all the information needed for migrating to another data source. It stores information such as the data source, table generation strategy, validation strategy, etc. So we can specify that it automatically  generates the relations and the tables of the entities.  
+The entities in the application are persisted in the same manner, the only change is the location and name of the database. The persistence unit (persistence.xml) stores all the information needed for migrating to another data source. It stores information such as the data source, table generation strategy, validation strategy, etc. We can specify that it automatically  generates the relations and the tables of the entities.  
 For the actual migration to another database, the copying of the data from one database to another, is done by the database administrators. They have to set up a migration strategy for retrieving the database from the first database and inserting it into the new database. 
 
  
@@ -70,13 +69,13 @@ Transactions are better scalable, different operations can be executed on differ
 
 
 	\paragraph{9. How do you ensure that only users that have specifically been assigned a manager role can open a ManagerSession and access the manager functionality?} \mbox{}\\\\
-In our application we made use of the @RolesAllowed annotation. We specified the annotation at class level of the ManagerSession. By doing this it applies to all the methods in the class. In this annotation we only putted the Manager role. So every person or group which has the Manager role assigned can use the methods.
+In our application we made use of the @RolesAllowed annotation. We specified the annotation at class level of the ManagerSession. By doing this it applies to all the methods in the class. In this annotation we only putted the Manager role. So every person or group which has the manager role assigned can use the methods.
 On out GlassFish server we created a couple of persons with the manager role and we enabled the automatically mapping functionality. By doing this the users have to provide their username and password before executing the manager methods. 
 	
 	
 	\paragraph{10.  Why would someone choose a Java EE solution over a regular Java SE application with Java RMI?} \mbox{}\\\\
 The answer on this question can be found in the introduction of the first JEE assignment. Java EE is a middleware which adds services relevant for distributed systems to Java SE. It provides services as transactions, persistence and session management. This allows the developer to cleanly structure business logic, client interaction and back-end processing.
-If someone would develop an enterprise-grade Java application, he would preferably use Java EE because it is a powerful model. It is also involved into frameworks such as Hibernate and Spring. It wouldn't be impossible to create a similar application using Java SE, but it would require a lot more work and less performant. 
+If someone would develop an enterprise-grade Java application, he would preferably use Java EE because it is a powerful model. It is also involved into frameworks such as Hibernate and Spring. It wouldn't be impossible to create a similar application using Java SE, but it would require a lot more work and would be less performant. 
 
 
 	
