@@ -4,21 +4,14 @@
 \studentnumberOne{r0627054} % Student number of first team partner.
 \authorTwo{Steven Ghekiere} % Name of second team partner.
 \studentnumberTwo{r0626062}  % Student number of second team partner.
-
+\usepackage{graphicx}
 
 \begin{document}
 	\maketitle
 
 	\paragraph{1. Outline the different tiers of your application, and indicate where classes are located.} \mbox{}\\\\
-Our application has 3 main tiers: The application client, the EJB container and the database server. The classes are located as follows:\mbox{}\\\\
-
-TODO diagram
-
-\begin{itemize}
-  \item The Main class is on the \emph{application client} side, with the getSession methods and other client-side functionalities.
-  \item The CarRentalSession and ManagerSession are the Enterprise beans inside the \emph{EJB container}. These classes contains the business logic of the application, and the client invokes these methods so they can access the services offered by these beans.
-  \item The \emph{database server} manages and provides access to the data. The enterprise beans uses JPA and JDBC to manage the data inside a Derby database.
-\end{itemize}
+The different tiers of the application are visualized in figure \ref{fig:tier_diagram}.
+Our application has 3 main tiers: The application machine, the business tier and the enterprise information system tier. The only classes which aren't specified are the classes in the carRental-lib project. It contains the following classes: CarType, Quote, Reservation, ReservationConstraints, ReservationException, CarRentalSessionRemote, ManagerSessionRemote. These classes are packaged in a jar and both the client and ejb project uses them.
 
 	
 	\paragraph{2. Why are client and manager session beans stateful and stateless respectively?} \mbox{}\\\\
@@ -31,6 +24,9 @@ The manager session is a stateless session bean, this means that it does not ret
 	\paragraph{3. How does dependency injection compare to the RMI registry of the RMI assignment?} \mbox{}\\\\
 The RMI registry of the RMI assignment is a simplified name service that allows clients to get a reference to a remote object. The @EJB annotation can be applied on fields or methods to inject dependencies. The EJB client container will first perform a JNDI lookup to locate the dependency. JNDI stands for Java Naming and Directory Interface, it allows distributed application to look up services in an abstract way.
 With JEE we don't have to explicitly instantiate, with the "new" keyword, the objects of which we need a reference. JEE provides these injection mechanisms. We only have to declare the needed resources with the annotations (@EJB) that denotes the injection point to the compiler. The container will then provide an instance of the required resource at runtime. The advantage of using dependency injection is that it simplifies our code because the container automatically provides these instances.
+
+
+\clearpage
 
 
 
@@ -54,7 +50,7 @@ For the actual migration to another database, the copying of the data from one d
 
 	\paragraph{7. How does your solution to concurrency prevent race conditions?} \mbox{}\\\\
 The car rental session is a stateful session bean, this means that every user will get his own session scoped instance. The next thread will wait until the first thread finishes. One user cannot execute the same code in parallel, but different users can.
-The manager session is a stateless session bean, this means that every thread will get a different instance of the EJB from the pool. The same code can be executed in parallel.\\\\
+The manager session is a stateless session bean, this means that every thread will get a different instance of the EJB from the pool. The same code can be executed in parallel.\\\\\clearpage
 Thread handling is done by EJB container. JSE level thread handling is discouraged to use by the developer before JEE 7. This means that, for example, the use of the 'synchronized' keyword is discouraged.\\\\
 In our solution we made use of a transaction for confirming the quotes of a particular car renter. If not all the quotes could be confirmed than a roll back will happen and a reservation exception will be thrown. This happens when multiple renters try to confirm their quotes at the same time. For specifying the transaction we made use of the @TransactionAttribute annotation.
 
@@ -77,9 +73,15 @@ On out GlassFish server we created a couple of persons with the manager role and
 The answer on this question can be found in the introduction of the first JEE assignment. Java EE is a middleware which adds services relevant for distributed systems to Java SE. It provides services as transactions, persistence and session management. This allows the developer to cleanly structure business logic, client interaction and back-end processing.
 If someone would develop an enterprise-grade Java application, he would preferably use Java EE because it is a powerful model. It is also involved into frameworks such as Hibernate and Spring. It wouldn't be impossible to create a similar application using Java SE, but it would require a lot more work and would be less performant. 
 
-
+	
+\begin{figure}
+  \includegraphics[width=\linewidth]{tier_diagram.png}
+  \caption{Different tiers of the application}
+  \label{fig:tier_diagram}
+\end{figure}	
 	
 	\clearpage
+
 
 	% You can include diagrams here.
 	
