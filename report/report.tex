@@ -10,9 +10,15 @@
 	\maketitle
 
 	\paragraph{1. Outline the different tiers of your application, and indicate where classes are located.} \mbox{}\\\\
+Our application has 3 main tiers: The application client, the EJB container and the database server. The classes are located as follows:\mbox{}\\\\
 
+TODO diagram
 
-
+\begin{itemize}
+  \item The Main class is on the \emph{application client} side, with the getSession methods and other client-side functionalities.
+  \item The CarRentalSession and ManagerSession are the Enterprise beans inside the \emph{EJB container}. These classes contains the business logic of the application, and the client invokes these methods so they can access the services offered by these beans.
+  \item The \emph{database server} manages and provides access to the data. The enterprise beans uses JPA and JDBC to manage the data inside a Derby database.
+\end{itemize}
 
 	
 	\paragraph{2. Why are client and manager session beans stateful and stateless respectively?} \mbox{}\\\\
@@ -29,8 +35,7 @@ With JEE we don't have to explicitly instantiate, with the "new" keyword, the ob
 
 
 	\paragraph{4. JPQL persistence queries without application logic are the recommended approach for retrieving rental statistics. Can you explain why this is more efficient?} \mbox{}\\\\
-
-
+JPQL is an efficient querying language that searches persistent entities that is used in JPA and is based on Hibernate Query Language (HQL). There are multiple advantages of fetching rental statistics without using application logic, with the main reason being speed. JPQL is able to search, group and filter tables much faster and more efficient than application (Java) logic could. Also, if the data is queried correctly, the amount of data that needs to be transmitted from the database to the server will be lower aswell, since the query already calculated the data needed, and thus gaining throughput. Another advantage is that the code is easier to read and maintain, since the server only needs to execute one query and nothing more. This means that the server admin has less code to maintain, so is less prone to error. 
 
 
 
@@ -47,8 +52,8 @@ For the actual migration to another database, the copying of the data from one d
  
 
 	\paragraph{7. How does your solution to concurrency prevent race conditions?} \mbox{}\\\\
-Thread handling is done by EJB container and JSE-level thread handling is discouraged to use by the developer before JEE 7. This means that for example the use of the 'synchronized' keyword, that we used in the RMI lab, is discouraged.
-
+Thread handling is done by EJB container and JSE-level thread handling is discouraged to use by the developer before JEE 7. This means that for example the use of the 'synchronized' keyword, that we used in the RMI lab, is discouraged.\mbox{}\\\\
+TODO: misschien hier nog een beetje bij?
 
 
 
@@ -70,7 +75,7 @@ By the use of server side authorization, we check if a user calling the ManagerS
 
 
 	\paragraph{10.  Why would someone choose a Java EE solution over a regular Java SE application with Java RMI?} \mbox{}\\\\
-
+Java EE offers a wide variety of functionalities that could be used for building a large scale distributed system, which would be hard to do in Java SE. Java EE provides an API for a lot of useful libraries (JDBC, JPA, dependency injection, servlets, ...) which makes creating these kind of applications easier. It wouldn't be impossible to create the same application using Java SE, but it would require a lot more work and testing. 
 
 
 	
