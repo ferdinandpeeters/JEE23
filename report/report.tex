@@ -48,36 +48,35 @@ The biggest difference with this assignment is that all the data is stored in a 
 
 
 		\paragraph{6. How does the Java EE middleware reduce the effort of migrating to another database engine?} \mbox{}\\\\
-The entities in the application are persisted in the same manner, and the only change is the location and name of the database. So the only configuration needed to change is inside the persistence unit (persistence.xml). JPA and JDBC automatically generates the relations and the tables of the entities.  
+The entities in the application are persisted in the same manner, the only change is the location and name of the database. The persistence unit (persistence.xml) stores all the information needed for migrating to another data source. It stores information such as the data source, table generation strategy, validation strategy, etc. So we can specify that it automatically  generates the relations and the tables of the entities.  
 For the actual migration to another database, the copying of the data from one database to another, is done by the database administrators. They have to set up a migration strategy for retrieving the database from the first database and inserting it into the new database. 
 
  
 
 	\paragraph{7. How does your solution to concurrency prevent race conditions?} \mbox{}\\\\
-Thread handling is done by EJB container and JSE-level thread handling is discouraged to use by the developer before JEE 7. This means that for example the use of the 'synchronized' keyword, that we used in the RMI lab, is discouraged.\mbox{}\\\\
-TODO: misschien hier nog een beetje bij?
+The car rental session is a stateful session bean, this means that every user will get his own session scoped instance. The next thread will wait until the first thread finishes. One user cannot execute the same code in parallel, but different users can.
+The manager session is a stateless session bean, this means that every thread will get a different instance of the EJB from the pool. The same code can be executed in parallel.\\\\
+Thread handling is done by EJB container. JSE level thread handling is discouraged to use by the developer before JEE 7. This means that, for example, the use of the 'synchronized' keyword is discouraged.\\\\
+In our solution we made use of a transaction for confirming the quotes of a particular car renter. If not all the quotes could be confirmed than a roll back will happen and a reservation exception will be thrown. This happens when multiple renters try to confirm their quotes at the same time. For specifying the transaction we made use of the @TransactionAttribute annotation.
 
 
 
 	\paragraph{8. How do transactions compare to synchronization in Java RMI in terms of the scalability of your application?} \mbox{}\\\\
-Transactions make sure the required data modifications are either all saved (committed) or rolled back. If any of the statements fail of our transaction, the transaction will roll back and all the statements are undone. Since the EJB container handles the rollback, we do not need to implement the reverse operation. We only need to raise an exception telling the container there went something wrong.\mbox{}\\\\
-Within Java RMI we cannot make use of the rollback functions and thus we needed to implement the rollback functionality ourselves. After we've undone our statements, we raise an exception to the client as expected.
-
+Transactions make sure the required data modifications are either all saved (committed) or rolled back. If any of the statements fail of our transaction, the transaction will roll back and all the statements are undone. Since the EJB container handles the rollback, we do not need to implement the reverse operation. We only need to raise an exception or telling the container explicitly that something went wrong.\\\\
+Within Java RMI we cannot make use of the rollback functions and thus we needed to implement the rollback functionality ourselves.\\\\
+Transactions are better scalable, different operations can be executed on different data sources in parallel by different threads. This was not the case in the Java RMI assignment, we had to make the method or list synchronized. This means that only one thread can access the resource at a time. All other threads attempting to enter the synchronized block are blocked until the first thread inside the block exits. This makes the Java RMI less scalable in comparison with transactions.
 
 
 
 
 	\paragraph{9. How do you ensure that only users that have specifically been assigned a manager role can open a ManagerSession and access the manager functionality?} \mbox{}\\\\
-By the use of server side authorization, we check if a user calling the ManagerSession methods has the Manager role. On our GlassFish server, we map certain users in the required Manager group. These users are stored inside a realm, which uses a policy with its own method of authentication and authorization. Our application uses this realm with it's policy, and so the users in the Manager group are able to log in using the default authentication prompt when using the ManagerSession's methods. 
-
-
-
-
-
-
-
+In our application we made use of the @RolesAllowed annotation. We specified the annotation at class level of the ManagerSession. By doing this it applies to all the methods in the class. In this annotation we only putted the Manager role. So every person or group which has the Manager role assigned can use the methods.
+On out GlassFish server we created a couple of persons with the manager role and we enabled the automatically mapping functionality. By doing this the users have to provide their username and password before executing the manager methods. 
+	
+	
 	\paragraph{10.  Why would someone choose a Java EE solution over a regular Java SE application with Java RMI?} \mbox{}\\\\
-Java EE offers a wide variety of functionalities that could be used for building a large scale distributed system, which would be hard to do in Java SE. Java EE provides an API for a lot of useful libraries (JDBC, JPA, dependency injection, servlets, ...) which makes creating these kind of applications easier. It wouldn't be impossible to create the same application using Java SE, but it would require a lot more work and testing. 
+The answer on this question can be found in the introduction of the first JEE assignment. Java EE is a middleware which adds services relevant for distributed systems to Java SE. It provides services as transactions, persistence and session management. This allows the developer to cleanly structure business logic, client interaction and back-end processing.
+If someone would develop an enterprise-grade Java application, he would preferably use Java EE because it is a powerful model. It is also involved into frameworks such as Hibernate and Spring. It wouldn't be impossible to create a similar application using Java SE, but it would require a lot more work and less performant. 
 
 
 	
